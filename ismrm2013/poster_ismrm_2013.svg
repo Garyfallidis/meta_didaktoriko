@@ -270,26 +270,48 @@
      inkscape:label="Layer 1">
     <text
        xml:space="preserve"
-       style="font-size:59.35559463999999963px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;filter:url(#filter39791)"
-       x="107.75651"
+       style="font-size:59.35559464px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter39791);font-family:Sans"
+       x="103.75651"
        y="-2368.749"
        id="text39291"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan39293"
-         x="107.75651"
+         x="103.75651"
          y="-2368.749"
-         style="font-size:67.59942626999999504px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold">                        Improved Angular Resolution with  GQI2: </tspan><tspan
+         style="font-size:67.59942627px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold">                        Improved Angular Resolution with  GQI2: </tspan><tspan
          sodipodi:role="line"
-         x="107.75651"
+         x="103.75651"
          y="-2284.2498"
          id="tspan39295"
-         style="font-size:67.59942626999999504px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold">a new Diffusion Imaging Q-Space Cartesian Lattice Reconstruction Method</tspan><tspan
+         style="font-size:67.59942627px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold">a new Diffusion Imaging Q-Space Cartesian Lattice Reconstruction Method</tspan><tspan
          sodipodi:role="line"
-         x="107.75651"
+         x="103.75651"
          y="-2199.7505"
-         style="font-size:67.59942626999999504px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold"
+         style="font-size:67.59942627px;font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold"
          id="tspan39297" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text2985"
+       y="-2372.749"
+       x="97.756508"
+       style="font-size:59.35559463999999963px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
+         y="-2372.749"
+         x="97.756508"
+         id="tspan2987"
+         sodipodi:role="line">                        Improved Angular Resolution with  GQI2: </tspan><tspan
+         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
+         id="tspan2989"
+         y="-2288.2498"
+         x="97.756508"
+         sodipodi:role="line">a new Diffusion Imaging Q-Space Cartesian Lattice Reconstruction Method</tspan><tspan
+         id="tspan4158"
+         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
+         y="-2203.7505"
+         x="97.756508"
+         sodipodi:role="line" /></text>
     <text
        xml:space="preserve"
        style="font-size:64.76640319999999917px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;font-family:Sans;stroke-opacity:1;filter:url(#filter39695)"
@@ -7236,28 +7258,6 @@ tFyZBuvPuFoSQvgVUdbn7fP2efu8fd4+b5+3/x/b/wPZrfDRiZsu/gAAAABJRU5ErkJggg==
 "
        height="509.79544"
        width="614.39972" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text2985"
-       y="-2372.749"
-       x="97.756508"
-       style="font-size:59.35559463999999963px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
-         y="-2372.749"
-         x="97.756508"
-         id="tspan2987"
-         sodipodi:role="line">                        Improved Angular Resolution with  GQI2: </tspan><tspan
-         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
-         id="tspan2989"
-         y="-2288.2498"
-         x="97.756508"
-         sodipodi:role="line">a new Diffusion Imaging Q-Space Cartesian Lattice Reconstruction Method</tspan><tspan
-         id="tspan4158"
-         style="font-size:67.59942627000000925px;font-weight:bold;fill:#ff0000;-inkscape-font-specification:Sans Bold"
-         y="-2203.7505"
-         x="97.756508"
-         sodipodi:role="line" /></text>
     <path
        inkscape:connector-curvature="0"
        id="path11781"
