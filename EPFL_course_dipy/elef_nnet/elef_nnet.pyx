@@ -1,3 +1,5 @@
+# cython: profile=True
+
 cimport cython
 import numpy as np
 
@@ -49,7 +51,7 @@ class CNnet:
                        self.ds2, self.de1, self.de2,
                        self.tmp_s1, self.tmp_s2)
 
-
+@cython.profile(True)
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def start_training(double[:, ::1] input_, double[:, ::1] W, double[:, ::1] V,
@@ -204,5 +206,6 @@ cdef void subm(double[:, ::1] A, double[:, ::1] B) nogil:
         for n in range(N):
             A[m, n] = A[m, n] - B[m, n]
     return
+
 
 
