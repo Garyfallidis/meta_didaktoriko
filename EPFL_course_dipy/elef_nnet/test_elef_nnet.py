@@ -11,12 +11,12 @@ for i in range(5):
 print time() - t
 
 
-# nn_orig = Nnet()
+nn_orig = Nnet()
 
-# t = time()
-# for i in range(5):
-# 	nn_orig.train()
-# print time() - t
+t = time()
+for i in range(5):
+ 	nn_orig.train()
+print time() - t
 
 
 #print nn.W.sum()

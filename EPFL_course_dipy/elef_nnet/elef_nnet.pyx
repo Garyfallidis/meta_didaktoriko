@@ -1,4 +1,4 @@
-# cython: profile=True
+# cython: profile=False
 
 cimport cython
 import numpy as np
@@ -7,6 +7,7 @@ from libc.math cimport sqrt, exp
 
 # cdef extern from "cblas.h":
 #    double cblas_ddot(int N, double *X, int incX, double *Y, int incY)
+from cython.parallel import prange
 
 
 class CNnet:
@@ -51,6 +52,7 @@ class CNnet:
                        self.ds2, self.de1, self.de2,
                        self.tmp_s1, self.tmp_s2)
 
+
 @cython.profile(True)
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -62,18 +64,25 @@ def start_training(double[:, ::1] input_, double[:, ::1] W, double[:, ::1] V,
                    double[:] tmp_s1, double[:] tmp_s2):
     cdef int i, j
 
+    cdef double * inputp = &input_[0, 0]
+    cdef int M = input_.shape[0]
+    cdef int N = input_.shape[1]
+
+    cdef double[:] target0 = target[0]
+    cdef double[:] input0 = input_[0]
+
     with nogil:
-        for i in range(2000):
+        for i in prange(2000):
             j = i % 2
 
             # prop
-            cdot_a1d(input_[j], W, e1)
+            cdot_a1dx(&inputp[j*N], N, W, e1)
             cactF(e1, s1)
             cdot_a1d(s1, V, e2)
             cactF(e2, s2)
 
             #backprop
-            sub(s2, target[j], ds2)            
+            sub(s2, target0, ds2)            
             dactF(s2, tmp_s2)
             mul(tmp_s2, ds2, de2)            
             cdot_b1d(V, de2, ds1)            
@@ -81,14 +90,27 @@ def start_training(double[:, ::1] input_, double[:, ::1] W, double[:, ::1] V,
             mul(tmp_s1, ds1, de1)
 
             outer(s1, de2, dV)
-            outer(input_[j], de1, dW)
+            outer(input0, de1, dW)
 
             #update
             mulm_scalar(dW, lr)
             mulm_scalar(dV, lr)
             subm(W, dW)
             subm(V, dV)
-            
+   
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+cdef void cdot_a1dx(double *a, int M, double[:, ::1] B, double[:] d) nogil:
+    #cdef int M = a.shape[0]
+    cdef int N = B.shape[1]
+
+    for n in range(N):
+        d[n] = 0.0
+        for m in range(M):
+            d[n] += a[m] * B[m, n]
+    return
 
 
 @cython.boundscheck(False)
@@ -204,8 +226,7 @@ cdef void subm(double[:, ::1] A, double[:, ::1] B) nogil:
 
     for m in range(M):
         for n in range(N):
-            A[m, n] = A[m, n] - B[m, n]
+            A[m, n] = A[m, n] - B[m, n]    
     return
-
 
 
