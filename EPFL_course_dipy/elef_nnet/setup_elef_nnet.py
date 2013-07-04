@@ -6,7 +6,7 @@ setup(
     cmdclass={'build_ext': build_ext},
     ext_modules=[Extension("elef_nnet",
                            ["elef_nnet.pyx"], 
-                           extra_compile_args=["-O3", "-fopenmp"],
+                           extra_compile_args=["-O3", "-funroll-loops", "-ffast-math","-fopenmp"],
                            extra_link_args=["-fopenmp"] )
                  ]
 )

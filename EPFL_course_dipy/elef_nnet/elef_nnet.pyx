@@ -9,6 +9,10 @@ from libc.math cimport sqrt, exp
 #    double cblas_ddot(int N, double *X, int incX, double *Y, int incY)
 from cython.parallel import prange
 
+cdef extern from "cblas.h":
+    enum CBLAS_ORDER:
+        CblasRowMajor, CblasColMajor
+
 
 class CNnet:
 
@@ -72,7 +76,7 @@ def start_training(double[:, ::1] input_, double[:, ::1] W, double[:, ::1] V,
     cdef double[:] input0 = input_[0]
 
     with nogil:
-        for i in prange(2000):
+        for i in range(2000):
             j = i % 2
 
             # prop
@@ -218,6 +222,9 @@ cdef void mulm_scalar(double[:, ::1] A, double c) nogil:
             A[m, n] = A[m, n] * c
     return
 
+
+#Replace this with pointers no need for 2 loops here
+#It could be only one loop - create an 1D array
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef void subm(double[:, ::1] A, double[:, ::1] B) nogil:
