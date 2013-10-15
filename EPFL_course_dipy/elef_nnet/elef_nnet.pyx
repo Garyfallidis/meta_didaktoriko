@@ -17,8 +17,7 @@ cdef extern from "cblas.h":
 class CNnet:
 
     def __init__(self):
-        self.rng = np.random.mtrand.RandomState(
-            1337)  # 1337 is the seed of the mersenne twister
+        self.rng = np.random.mtrand.RandomState(1337)  # 1337 is the seed of the mersenne twister
         self.input = self.rng.rand(2, 500)
         self.W = self.rng.rand(500, 400)
         self.V = self.rng.rand(400, 25)
@@ -173,17 +172,6 @@ cdef void sub(double[:] a, double[:] b, double[:] c) nogil:
 
     return
 
-
-@cython.boundscheck(False)
-@cython.wraparound(False)
-cdef void mul(double[:] a, double[:] b, double[:] c) nogil:
-    cdef int M = a.shape[0]
-    for m in range(M):
-        c[m] = a[m] * b[m]
-
-    return
-
-
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef void cdot(double[:, ::1] A, double[:, ::1] B, double[:, ::1] D) nogil:
@@ -236,4 +224,10 @@ cdef void subm(double[:, ::1] A, double[:, ::1] B) nogil:
             A[m, n] = A[m, n] - B[m, n]    
     return
 
+"""
+import timeit as ti
 
+l = sorted(ti.repeat(stmt='nnet.train();',  # print np.sum(nnet.W)',
+                     setup='from __main__ import CNnet; nnet = CNnet()', repeat=10, number=1))
+print l
+"""
