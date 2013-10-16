@@ -100,26 +100,6 @@ def save_odfs_peaks(training, odf, affine, sphere, dres, prefix):
         return training_check(dres, prefix)
 
 
-def training_check(dres, prefix):
-
-    seeds_per_vox = 5
-
-    num_of_cpus = 6
-
-    cmd = 'python ~/Devel/scilpy/scripts/stream_local.py -odf ' + dres + prefix + 'odf_sh.nii.gz -m data/training-data_mask.nii.gz -s data/training-data_rois.nii.gz -n -' + str(
-        seeds_per_vox) + ' -process ' + str(num_of_cpus) + ' -o ' + dres + prefix + 'streams.trk'
-
-    pipe(cmd)
-
-    mat, conn_mats, diffs, ratio = streams_to_connmat(dres + prefix + 'streams.trk', seeds_per_vox)
-
-    save_pickle(dres + prefix + 'conn_mats.pkl', {'mat': mat, 'conn_mats': conn_mats, 'diffs': diffs, 'ratio':ratio})
-
-    print dres + prefix + 'conn_mats.pkl'
-
-    return diffs
-
-
 def prepare(training, category, snr, denoised, odeconv, tv, method):
 
     data, affine, gtab = get_specific_data(training,
