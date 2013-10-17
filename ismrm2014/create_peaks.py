@@ -14,8 +14,7 @@ from dipy.reconst.multi_voxel import multi_voxel_fit
 from dipy.reconst.shm import sph_harm_lookup, smooth_pinv, sph_harm_ind_list
 from dipy.core.geometry import cart2sphere
 from dipy.viz import fvtk
-
-
+from dipy.reconst.shore import ShoreModel
 
 
 def load_nifti(fname, verbose=True):
@@ -59,7 +58,7 @@ def estimate_response(gtab, data, affine, mask, fa_thr=0.7):
     return (evals, S0), evals[1]/evals[0]
 
 
-def pfm(model, data, mask, sphere):
+def pfm(model, data, mask, sphere, parallel=False):
     peaks = peaks_from_model(model=model,
                              data=data,
                              mask=mask,
@@ -72,7 +71,7 @@ def pfm(model, data, mask, sphere):
                              sh_order=8,
                              sh_basis_type='mrtrix',
                              npeaks=5,
-                             parallel=False,
+                             parallel=parallel,
                              nbr_process=6)
     return peaks
 
@@ -127,7 +126,7 @@ def sdt(gtab, data, affine, mask, ratio, sphere):
     return peaks
 
 
-def gqi(gtab, data, affine, mask, ratio, sphere, sl=3.):
+def gqi(gtab, data, affine, mask, sphere, sl=3.):
     model = GeneralizedQSamplingModel(gtab,
                                       method='gqi2',
                                       sampling_length=sl,
@@ -224,6 +223,16 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
     return peaks
 
 
+def shore(gtab, data, affine, mask, sphere):
+    radial_order = 6
+    zeta = 700
+    lambdaN=1e-8
+    lambdaL=1e-8
+    model = ShoreModel(gtab, radial_order=radial_order, zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
+    peaks = pfm(model, data, mask, sphere)
+    return peaks
+
+
 home = expanduser('~')
 dname = join(home, 'Data', 'ismrm_2014')
 
@@ -246,9 +255,11 @@ save_peaks(dname, 'csd', peaks, affine)
 peaks = sdt(gtab, data, affine, mask, ratio, sphere)
 save_peaks(dname, 'sdt', peaks, affine)
 
-peaks = gqi(gtab, data, affine, mask, response, sphere, sl=3.)
+peaks = gqi(gtab, data, affine, mask, sphere, sl=3.)
 save_peaks(dname, 'gqi', peaks, affine)
 
 peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3.)
 save_peaks(dname, 'gqid', peaks, affine)
 
+peaks = shore(gtab, data, affine, mask, sphere)
+save_peaks(dname, 'shore', peaks, affine)
