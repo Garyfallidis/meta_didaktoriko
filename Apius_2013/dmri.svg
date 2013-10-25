@@ -13,8 +13,8 @@
    height="1052.3622047"
    id="svg3134"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 3">
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="dmri.svg">
   <defs
      id="defs3136" />
   <sodipodi:namedview
@@ -25,14 +25,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="549.66277"
+     inkscape:cx="270.77104"
      inkscape:cy="620.73874"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="744"
-     inkscape:window-x="0"
+     inkscape:window-width="1856"
+     inkscape:window-height="1176"
+     inkscape:window-x="64"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,14 +59,14 @@
     <text
        xml:space="preserve"
        style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
-       x="77.742859"
-       y="184.44385"
+       x="87.844383"
+       y="188.48447"
        id="text3881"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3883"
-         x="77.742859"
-         y="184.44385">Diffusion MRI</tspan></text>
+         x="87.844383"
+         y="188.48447">Diffusion MRI</tspan></text>
     <rect
        style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.84037662;stroke-opacity:1"
        id="rect3885"
@@ -355,5 +355,140 @@
          x="168.58109"
          y="521.68646"
          id="tspan3321">registration</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3224-1-4"
+       width="162.21886"
+       height="60.327374"
+       x="373.45923"
+       y="461.56381"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="399.24649"
+       y="484.59656"
+       id="text3226-6-9"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="399.24649"
+         y="484.59656"
+         id="tspan3228-9-1">file handling</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="394.85526"
+       y="501.09512"
+       id="text3230-1-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="394.85526"
+         y="501.09512"
+         id="tspan3232-1-3">medical imaging </tspan><tspan
+         sodipodi:role="line"
+         x="394.85526"
+         y="518.59509"
+         id="tspan3064">formats</tspan></text>
+    <rect
+       ry="8.5987902"
+       y="644.34369"
+       x="40.556232"
+       height="38.644894"
+       width="173.78035"
+       id="rect3208-8"
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.7435354;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3210-3"
+       y="669.45447"
+       x="53.370758"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3212-6"
+         y="669.45447"
+         x="53.370758"
+         sodipodi:role="line"
+         style="font-weight:bold">Machine Learning</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.7435354;stroke-opacity:1"
+       id="rect3901"
+       width="173.78035"
+       height="38.644894"
+       x="240.55621"
+       y="644.34369"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="253.37076"
+       y="669.45447"
+       id="text3903"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="253.37076"
+         y="669.45447"
+         id="tspan3905">Signal Processing</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.68099415;stroke-opacity:1"
+       id="rect3901-0"
+       width="145.77536"
+       height="38.644894"
+       x="444.45007"
+       y="644.13104"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="457.26462"
+       y="669.24182"
+       id="text3903-5"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="457.26462"
+         y="669.24182"
+         id="tspan3905-6">Neuroanatomy</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.64468378;stroke-opacity:1"
+       id="rect3931"
+       width="130.64441"
+       height="38.644894"
+       x="164.80499"
+       y="708.3031"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="177.61952"
+       y="733.41388"
+       id="text3933"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="177.61952"
+         y="733.41388"
+         id="tspan3935">Coding Skills </tspan></text>
+    <rect
+       ry="8.5987902"
+       y="706.28278"
+       x="379.9675"
+       height="38.644894"
+       width="130.64441"
+       id="rect3937"
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.64468378;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3939"
+       y="731.39355"
+       x="392.78201"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3941"
+         y="731.39355"
+         x="392.78201"
+         sodipodi:role="line"
+         style="font-weight:bold">Model Fitting</tspan></text>
   </g>
 </svg>
