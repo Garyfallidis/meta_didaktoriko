@@ -9,7 +9,7 @@ from dipy.reconst.gqi import (GeneralizedQSamplingModel,
                               squared_radial_component)
 from dipy.reconst.csdeconv import ConstrainedSphericalDeconvModel, odf_deconv
 from dipy.reconst.csdeconv import ConstrainedSDTModel, forward_sdt_deconv_mat
-from dipy.reconst.odf import peaks_from_model
+from dipy.reconst.odf import peaks_from_model, PeaksAndMetrics, peak_directions
 from dipy.reconst.multi_voxel import multi_voxel_fit
 from dipy.reconst.shm import sph_harm_lookup, smooth_pinv, sph_harm_ind_list
 from dipy.core.geometry import cart2sphere
@@ -17,6 +17,8 @@ from dipy.viz import fvtk
 from dipy.reconst.shore import (ShoreModel, ShoreFit,
                                 L_SHORE, N_SHORE, SHOREmatrix,
                                 SHOREmatrix_odf)
+from dipy.core.ndindex import ndindex
+from dipy.sims.voxel import multi_tensor
 
 
 def load_nifti(fname, verbose=True):
@@ -57,7 +59,7 @@ def estimate_response(gtab, data, affine, mask, fa_thr=0.7):
     evals = np.array([l01[0], l01[1], l01[1]])
     print(evals)
     print(S0)
-    return (evals, S0), evals[1]/evals[0]
+    return (evals, S0), evals[1] / evals[0]
 
 
 def pfm(model, data, mask, sphere, parallel=False):
@@ -99,8 +101,8 @@ def save_peaks(dname, prefix, peaks, affine, verbose=True):
 
 
 def peaks_to_odf(peaks):
-    if peaks.shm_coff is not None:
-        odf = np.dot(peaks.shm_coff, peaks.invB.T)
+    if peaks.shm_coeff is not None:
+        odf = np.dot(peaks.shm_coeff, peaks.invB.T)
         return odf
     else:
         raise ValueError("peaks does not have attribute shm_coeff")
@@ -112,15 +114,40 @@ def show_odfs(peaks, sphere):
     #odf = odf[14:24, 22, 23:33]
     odf = odf[:, 22, :]
     sfu = fvtk.sphere_funcs(odf[:, None, :], sphere, norm=True)
+    sfu.RotateX(-90)
     fvtk.add(ren, sfu)
     fvtk.show(ren)
 
 
-def prepare_data_for_multi_shell(gtab, data):
+def show_sim_odfs(peaks, sphere, title):
+    ren = fvtk.ren()
+    odf = np.dot(peaks.shm_coeff, peaks.invB.T)
+    sfu = fvtk.sphere_funcs(odf, sphere, norm=True)
+    fvtk.add(ren, sfu)
+    fvtk.show(ren, title=title)
 
-    ind1000 = (gtab.bvals < 10) & (gtab.bvals < 1100) & (gtab.bvals > 900)
-    ind2000 = (gtab.bvals < 10) & (gtab.bvals < 2100) & (gtab.bvals > 1900)
-    ind3000 = (gtab.bvals < 10) & (gtab.bvals < 3100) & (gtab.bvals > 2900)
+
+def show_odfs_from_nii(fshm_coeff, finvB, sphere=None):
+
+    odf_sh = nib.load(fshm_coeff).get_data()
+    invB = np.loadtxt(finvB)
+    odf = np.dot(odf_sh, invB.T)
+    # odf = odf[14:24, 22, 23:33]
+    odf = odf[:, 22, :]
+
+    if sphere is None:
+        sphere = get_sphere('symmetric724')
+    ren = fvtk.ren()
+    sfu = fvtk.sphere_funcs(odf[:, None, :], sphere, norm=True)
+    fvtk.add(ren, sfu)
+    fvtk.show(ren)
+
+
+def prepare_data_for_multi_shell(gtab, data, mask):
+
+    ind1000 = (gtab.bvals < 10) | ((gtab.bvals < 1100) & (gtab.bvals > 900))
+    ind2000 = (gtab.bvals < 10) | ((gtab.bvals < 2100) & (gtab.bvals > 1900))
+    ind3000 = (gtab.bvals < 10) | ((gtab.bvals < 3100) & (gtab.bvals > 2900))
 
     S1000 = data[..., ind1000]
     S2000 = data[..., ind2000]
@@ -129,20 +156,11 @@ def prepare_data_for_multi_shell(gtab, data):
     bvals = gtab.bvals
     bvecs = gtab.bvecs
 
-    bvals1000 = bvals[ind1000]
-    bvals2000 = bvals[ind2000]
-    bvals3000 = bvals[ind3000]
+    gtab1000 = gradient_table(bvals[ind1000], bvecs[ind1000, :])
+    gtab2000 = gradient_table(bvals[ind2000], bvecs[ind2000, :])
+    gtab3000 = gradient_table(bvals[ind3000], bvecs[ind3000, :])
 
-    bvals1000 = bvecs[ind1000, :]
-    bvals2000 = bvals[ind2000, :]
-    bvals3000 = bvals[ind3000, :]
-
-    new_data = np.zeros((3,) + S1000.shape)
-    new_data[0] = S1000
-    new_data[1] = S2000
-    new_data[2] = S3000
-
-    return gradient_table, new_data,
+    return (gtab1000, S1000), (gtab2000, S2000), (gtab3000, S3000)
 
 
 def csd(gtab, data, affine, mask, response, sphere):
@@ -151,19 +169,99 @@ def csd(gtab, data, affine, mask, response, sphere):
     return peaks
 
 
-def mcsd(gtab, data, affine, mask, response, sphere):
-    model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=8)
+def max_abs(shm_coeff):
+    ind = np.argmax(np.abs(shm_coeff), axis=0)
+    x, y, z, w = numpy.indices(shm_coeff.shape[1:])
+    new_shm_coeff = shm_coeff[(ind, x, y, z, w)]
+    return new_shm_coeff
 
-    data2 = data.reshape
 
-    peaks = pfm(model, data, mask, sphere)
+def dirs_from_odf(odfs, sphere, relative_peak_threshold=.25,
+                  min_separation_angle=45.,
+                  peak_normalize=True,
+                  max_peak_number=5):
+    # or directions from odf
+    num_peak_coeffs = max_peak_number * 3
+    peaks = np.zeros(odfs.shape[:-1] + (num_peak_coeffs,))
+
+    for index in ndindex(odfs.shape[:-1]):
+        vox_peaks, values, _ = peak_directions(odfs[index], sphere,
+                                               float(relative_peak_threshold),
+                                               float(min_separation_angle))
+
+        if peak_normalize is True:
+            values /= values[0]
+            vox_peaks = vox_peaks * values[:, None]
+
+        vox_peaks = vox_peaks.ravel()
+        m = vox_peaks.shape[0]
+
+        if m > num_peak_coeffs:
+            m = num_peak_coeffs
+        peaks[index][:m] = vox_peaks[:m]
+
+    peaks = peaks.reshape(odfs.shape[:3] + (5, 3))
     return peaks
+
+
+def csd_ms(gtab, data, affine, mask, response, sphere):
+
+    gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
+
+    coeffs = []
+    invBs = []
+    for gd in [gd1, gd2, gd3]:
+        response, ratio = estimate_response(gd[0], gd[1],
+                                            affine, mask, fa_thr=0.7)
+        model = ConstrainedSphericalDeconvModel(gd[0], response, sh_order=8)
+        peaks = pfm(model, gd[1], mask, sphere)
+        coeffs.append(peaks.shm_coeff)
+        invBs.append(peaks.invB)
+        print(peaks.invB)
+
+    coeffs3 = np.array(coeffs)
+    best_coeffs = max_abs(coeffs3)
+
+    odf = np.dot(best_coeffs, peaks.invB.T)
+    new_peaks = PeaksAndMetrics()
+    new_peaks.peak_dirs = dirs_from_odf(odf, sphere)
+    new_peaks.invB = peaks.invB
+    new_peaks.shm_coeff = best_coeffs
+
+    return new_peaks
 
 
 def sdt(gtab, data, affine, mask, ratio, sphere):
     model = ConstrainedSDTModel(gtab, ratio, sh_order=8)
     peaks = pfm(model, data, mask, sphere)
     return peaks
+
+
+def sdt_ms(gtab, data, affine, mask, ratio, sphere):
+
+    gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
+
+    coeffs = []
+    invBs = []
+    for gd in [gd1, gd2, gd3]:
+        response, ratio = estimate_response(gd[0], gd[1],
+                                            affine, mask, fa_thr=0.7)
+        model = ConstrainedSDTModel(gd[0], ratio, sh_order=8)
+        peaks = pfm(model, gd[1], mask, sphere)
+        coeffs.append(peaks.shm_coeff)
+        invBs.append(peaks.invB)
+        print(peaks.invB)
+
+    coeffs3 = np.array(coeffs)
+    best_coeffs = max_abs(coeffs3)
+
+    odf = np.dot(best_coeffs, peaks.invB.T)
+    new_peaks = PeaksAndMetrics()
+    new_peaks.peak_dirs = dirs_from_odf(odf, sphere)
+    new_peaks.invB = peaks.invB
+    new_peaks.shm_coeff = best_coeffs
+
+    return new_peaks
 
 
 def gqi(gtab, data, affine, mask, sphere, sl=3.):
@@ -195,7 +293,7 @@ def mats_odfdeconv(sphere, basis=None, ratio=3 / 15., sh_order=8, lambda_=1., ta
     return R, B_reg
 
 
-def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
+def gqid(gtab, data, affine, mask, ratio, sphere, sl=3., r2=False):
 
     class GeneralizedQSamplingDeconvModel(GeneralizedQSamplingModel):
 
@@ -204,7 +302,7 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
                      method='gqi2',
                      sampling_length=1.2,
                      normalize_peaks=False,
-                     ratio=3/15.,
+                     ratio=3 / 15.,
                      sh_order=8,
                      lambda_=1.,
                      tau=0.1):
@@ -228,7 +326,6 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
         def fit(self, data):
             return GeneralizedQSamplingDeconvFit(self, data)
 
-
     class GeneralizedQSamplingDeconvFit(GeneralizedQSamplingFit):
 
         def __init__(self, model, data):
@@ -238,12 +335,13 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
             self.gqi_vector = self.model.cache_get('gqi_vector', key=sphere)
             if self.gqi_vector is None:
                 if self.model.method == 'gqi2':
-                    H=squared_radial_component
+                    H = squared_radial_component
                     self.gqi_vector = np.real(H(np.dot(self.model.b_vector,
-                                            sphere.vertices.T) * self.model.Lambda / np.pi))
+                                                       sphere.vertices.T) * self.model.Lambda / np.pi))
                 if self.model.method == 'standard':
-                    self.gqi_vector = np.real(np.sinc(np.dot(self.model.b_vector,
-                                            sphere.vertices.T) * self.model.Lambda / np.pi))
+                    self.gqi_vector = np.real(
+                        np.sinc(np.dot(self.model.b_vector,
+                                       sphere.vertices.T) * self.model.Lambda / np.pi))
                 self.model.cache_set('gqi_vector', sphere, self.gqi_vector)
 
             gqi_odf = np.dot(self.data, self.gqi_vector)
@@ -255,10 +353,9 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
                                          self.model.R,
                                          self.model.B_reg,
                                          lambda_=self.model.lambda_,
-                                         tau=self.model.tau, r2_term=True)
+                                         tau=self.model.tau, r2_term=r2)
 
             return np.dot(fodf_sh, self.model.invB.T)
-
 
     model = GeneralizedQSamplingDeconvModel(gtab, 'gqi2', sl, ratio=ratio)
     peaks = pfm(model, data, mask, sphere)
@@ -268,11 +365,22 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.):
 def shore(gtab, data, affine, mask, sphere):
     radial_order = 6
     zeta = 700
-    lambdaN=1e-8
-    lambdaL=1e-8
-    model = ShoreModel(gtab, radial_order=radial_order, zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
+    lambdaN = 1e-8
+    lambdaL = 1e-8
+    model = ShoreModel(gtab, radial_order=radial_order,
+                       zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
     peaks = pfm(model, data, mask, sphere)
     return peaks
+
+
+def shore_odf(gtab, data, affine, mask, sphere):
+    radial_order = 6
+    zeta = 700
+    lambdaN = 1e-8
+    lambdaL = 1e-8
+    model = ShoreModel(gtab, radial_order=radial_order,
+                       zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
+    return model.fit(data).odf(sphere)
 
 
 def shored(gtab, data, affine, mask, ratio, sphere):
@@ -280,7 +388,7 @@ def shored(gtab, data, affine, mask, ratio, sphere):
     class ShoreDeconvModel(ShoreModel):
 
         def __init__(self, gtab, radial_order=6, zeta=700, lambdaN=1e-8,
-                     lambdaL=1e-8, ratio=3/15.,
+                     lambdaL=1e-8, ratio=3 / 15.,
                      sh_order=8,
                      lambda_=1.,
                      tau=0.1):
@@ -305,7 +413,8 @@ def shored(gtab, data, affine, mask, ratio, sphere):
             # Generate the SHORE basis
             M = self.cache_get('shore_matrix', key=self.gtab)
             if M is None:
-                M = SHOREmatrix(self.radial_order,  self.zeta, self.gtab, self.tau)
+                M = SHOREmatrix(
+                    self.radial_order,  self.zeta, self.gtab, self.tau)
                 self.cache_set('shore_matrix', self.gtab, M)
 
             # Compute the signal coefficients in SHORE basis
@@ -315,7 +424,6 @@ def shored(gtab, data, affine, mask, ratio, sphere):
 
             return ShoreDeconvFit(self, coef)
 
-
     class ShoreDeconvFit(ShoreFit):
 
         def odf(self, sphere):
@@ -324,7 +432,7 @@ def shored(gtab, data, affine, mask, ratio, sphere):
             upsilon = self.model.cache_get('shore_matrix_odf', key=sphere)
             if upsilon is None:
                 upsilon = SHOREmatrix_odf(self.radial_order, self.zeta,
-                                      sphere.vertices)
+                                          sphere.vertices)
                 self.model.cache_set('shore_matrix_odf', sphere, upsilon)
 
             odf = np.dot(upsilon, self._shore_coef)
@@ -342,11 +450,24 @@ def shored(gtab, data, affine, mask, ratio, sphere):
 
     radial_order = 6
     zeta = 700
-    lambdaN=1e-8
-    lambdaL=1e-8
-    model = ShoreDeconvModel(gtab, radial_order=radial_order, zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
+    lambdaN = 1e-8
+    lambdaL = 1e-8
+    model = ShoreDeconvModel(
+        gtab, radial_order=radial_order, zeta=zeta, lambdaN=lambdaN, lambdaL=lambdaL)
     peaks = pfm(model, data, mask, sphere)
     return peaks
+
+
+def simulated_data(gtab, S0=100, SNR=100):
+    mevals = np.array(([0.0015, 0.0003, 0.0003],
+                       [0.0015, 0.0003, 0.0003]))
+
+    S, sticks = multi_tensor(gtab, mevals, S0, angles=[(0, 0), (90, 0)],
+                             fractions=[50, 50], snr=SNR)
+
+    ratio = 3/15.
+
+    return S, ratio
 
 
 home = expanduser('~')
@@ -362,28 +483,49 @@ gtab, data, affine, mask = load_data(fraw, fmask, fbval, fbvec)
 response, ratio = estimate_response(gtab, data, affine, mask, fa_thr=0.7)
 sphere = get_sphere('symmetric724')
 
+S, ratio = simulated_data(gtab, 100, 100)
+data = S[None, None, None, :]
+mask = np.ones(data.shape[:3])
 # data = data[14:24, 22:23, 23:33]
 # mask = mask[14:24, 22:23, 23:33]
 
-# peaks = csd(gtab, data, affine, mask, response, sphere)
-# save_peaks(dname, 'csd', peaks, affine)
+#peaks = csd(gtab, data, affine, mask, response, sphere)
+#show_sim_odfs(peaks, sphere, 'csd')
+#save_peaks(dname, 'csd', peaks, affine)
 
 # peaks = sdt(gtab, data, affine, mask, ratio, sphere)
-# save_peaks(dname, 'sdt', peaks, affine)
+# show_sim_odfs(peaks, sphere, 'sdt')
+# #save_peaks(dname, 'sdt', peaks, affine)
 
 # peaks = gqi(gtab, data, affine, mask, sphere, sl=3.)
-# save_peaks(dname, 'gqi', peaks, affine)
+# show_sim_odfs(peaks, sphere, 'gqi')
+# #save_peaks(dname, 'gqi', peaks, affine)
 
-# peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3.)
-# save_peaks(dname, 'gqid', peaks, affine)
+# peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3., r2=False)
+# show_sim_odfs(peaks, sphere, 'gqid')
+# #save_peaks(dname, 'gqid', peaks, affine)
 
-# peaks = shore(gtab, data, affine, mask, sphere)
-# save_peaks(dname, 'shore', peaks, affine)
+# peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3., r2=True)
+# show_sim_odfs(peaks, sphere, 'gqid2')
+# #save_peaks(dname, 'gqid2', peaks, affine)
 
-# peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3.)
-# save_peaks(dname, 'gqid2', peaks, affine)
+peaks = shore(gtab, data, affine, mask, sphere)
+show_sim_odfs(peaks, sphere, 'shore')
+#save_peaks(dname, 'shore', peaks, affine)
+odf = shore_odf(gtab, data, affine, mask, sphere)
+ren = fvtk.ren()
+sfu = fvtk.sphere_funcs(odf, sphere)
+fvtk.add(ren, sfu)
+fvtk.show(ren)
 
 # peaks = shored(gtab, data, affine, mask, ratio, sphere)
-# save_peaks(dname, 'shored', peaks, affine)
+# show_sim_odfs(peaks, sphere, 'shored')
+# #save_peaks(dname, 'shored', peaks, affine)
 
+# peaks = csd_ms(gtab, data, affine, mask, response, sphere)
+# show_sim_odfs(peaks, sphere, 'csd_ms')
+# #save_peaks(dname, 'csd_ms', peaks, affine)
 
+# peaks = sdt_ms(gtab, data, affine, mask, ratio, sphere)
+# show_sim_odfs(peaks, sphere, 'sdt_ms')
+# #save_peaks(dname, 'sdt_ms', peaks, affine)
