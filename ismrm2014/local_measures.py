@@ -46,7 +46,7 @@ print "[OK]\n"
 ########################
 #SUBMISSIONs = glob.glob( "submissions/*.nii.gz" )
 
-SUBMISSIONs = glob.glob(join(dname, 'second_round', "*_dirs.nii.gz"))
+SUBMISSIONs = glob.glob(join(dname, 'third_round', "*_dirs.nii.gz"))
 print(SUBMISSIONs)
 
 # prepare EXCEL output
