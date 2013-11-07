@@ -6,6 +6,11 @@ from math import *
 import sys, glob, xlwt, os.path, re
 from os.path import expanduser, join
 
+
+def remove_zero_rows(A):
+    an = np.sqrt(np.sum(A ** 2, axis=-1))
+    return A[np.nonzero(an)]
+
 home = expanduser('~')
 #dname = join(home, 'Research/Data/ISMRM_2014/local_reconstruction/')
 dname = join(home, 'Data', 'ismrm_2014')
@@ -34,9 +39,13 @@ print "[OK]\n"
 print "-> opening white-matter mask...",
 
 #niiWM = nib.load(join('ground-truth', 'fibers.nii.gz'))
-niiWM = nib.load(join(dname, 'ground_truth', 'wm_tractometer.nii')) #'wm_mask.nii.gz'))
+#niiWM = nib.load(join(dname, 'ground_truth', 'wm_tractometer.nii')) #'wm_mask.nii.gz'))
+niiWM = nib.load(join(dname, 'ground_truth', 'wm_fractions.nii.gz'))
 niiWM_hdr = niiWM.get_header()
 niiWM_img = niiWM.get_data()
+niiWM_img[niiWM_img >0.9] = 1
+niiWM_img[niiWM_img <=0.9] = 0
+
 #niiWM_img = niiWM_img[14:24, 22:24, 23:33]
 
 #niiWM_dim = niiWM_hdr.get_data_shape()
@@ -49,8 +58,8 @@ print "[OK]\n"
 ########################
 #SUBMISSIONs = glob.glob( "submissions/*.nii.gz" )
 
-SUBMISSIONs = glob.glob(join(dname, 'sixth_round', "*_new_*_dirs.nii.gz"))
-print(SUBMISSIONs)
+SUBMISSIONs = glob.glob(join(dname, 'sixth_round', "*_new2f_*_dirs.nii.gz"))
+#print(SUBMISSIONs)
 
 # prepare EXCEL output
 XLS = xlwt.Workbook()
@@ -89,6 +98,17 @@ XLS_sheet.write( 0, 29, "AE, 50 perc" )
 XLS_sheet.write( 0, 30, "AE, 75 perc" )
 XLS_sheet.write( 0, 31, "AE, max" )
 
+import pandas as pd
+
+Pds = []
+nPs = []
+nMs = []
+AEs = []
+bnames = []
+corrects = []
+overs = []
+unders = []
+names = []
 
 XLS_row = 1
 for filename in SUBMISSIONs:
@@ -126,11 +146,38 @@ for filename in SUBMISSIONs:
     nM = np.zeros( niiGT_dim[0:3] )
     AE = np.zeros( niiGT_dim[0:3] )
 
+    no_of_over = np.zeros(niiGT_img.shape[:3])
+    no_of_under = np.zeros(niiGT_img.shape[:3])
+    no_of_equal = np.zeros(niiGT_img.shape[:3])
+
+    no_mask_voxels = 0
+
+
     for z in range(0,nz):
         for y in range(0,ny):
             for x in range(0,nx):
                 if niiWM_img[x,y,z] == 0 :
                     continue
+
+                # scil & gold metrics
+                index = (x, y, z)
+                scil = niiRECON_img[index].reshape(5, 3)
+                scil = remove_zero_rows(scil)
+
+                gold = niiGT_img[index].reshape(5, 3)
+                gold = remove_zero_rows(gold)
+
+
+                if len(scil) > len(gold):
+                    no_of_over[index] += 1
+
+                if len(scil) < len(gold):
+                    no_of_under[index] += 1
+
+                if len(scil) == len(gold):
+                    no_of_equal[index] += 1
+
+                no_mask_voxels += 1
 
                 # NUMBER OF FIBER POPULATIONS
                 #############################
@@ -216,7 +263,29 @@ for filename in SUBMISSIONs:
     print "\t\tn- = %.3f" % np.mean( nM[niiWM_idx] )
     print "\t\tn+ = %.3f" % np.mean( nP[niiWM_idx] )
     print "\t\tAE = %.2f degree" % np.mean( AE[niiWM_idx] )
-    print " "
+
+
+    Pds.append(np.mean(Pd[niiWM_idx]))
+    nMs.append(np.mean(nM[niiWM_idx]))
+    nPs.append(np.mean(nP[niiWM_idx]))
+    AEs.append(np.mean(AE[niiWM_idx]))
+    bnames.append(os.path.basename(filename))
+
+    over = 100 * np.sum(no_of_over) / float(no_mask_voxels)
+    under = 100 * np.sum(no_of_under) / float(no_mask_voxels)
+    correct = 100 * np.sum(no_of_equal) / float(no_mask_voxels)
+
+    print "\t\tCorrect = %.2f" % correct
+    print "\t\tOver = %.2f" % over
+    print "\t\tUnder = %.2f" % under
+
+    overs.append(over)
+    unders.append(under)
+    corrects.append(correct)
+
+
+df = pd.DataFrame({'Pd':Pds, 'n+':nPs, 'n-':nMs, 'AE':AEs, 'method':bnames,'correct':corrects, 'over':overs, 'under':under})
+df.to_excel('local_metrics_fractions_wm.xls', sheet_name='Sheet 1')
 
     # write to EXCEL file
 #     m = re.search( "ISBI2013_acq-(\w+)_appModel-(\d+)_model-(\w+)_format-peaks_snr-(\d+).*",

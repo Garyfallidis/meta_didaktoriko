@@ -596,9 +596,8 @@ def gqid(gtab, data, affine, mask, ratio, sphere, sl=3.5, r2=True):
     return peaks
 
 
-def shore(gtab, data, affine, mask, sphere, min_angle, relative_peak_th):
-    radial_order = 6
-    zeta = 700
+def shore(gtab, data, affine, mask, sphere, min_angle, relative_peak_th, zeta=700, order=6):
+    radial_order = order
     lambdaN = 1e-8
     lambdaL = 1e-8
     model = ShoreModel(gtab, radial_order=radial_order,
@@ -707,20 +706,20 @@ def simulated_data(gtab, S0=100, SNR=100):
 visu_odf = False
 home = expanduser('~')
 dname = join(home, 'Data', 'ismrm_2014')
-dname2 = join(home, 'Data', 'ismrm_2014', 'fifth_round')
+dname2 = join(home, 'Data', 'ismrm_2014', 'sixth_round')
 #dname = join(home, 'Research/Data/ISMRM_2014/local_reconstruction/')
 
-fraw = join(dname, 'DWIS_elef-scheme_SNR-20.nii.gz')
-#fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-1_denoised_rician.nii.gz')
+#fraw = join(dname, 'DWIS_elef-scheme_SNR-20.nii.gz')
+fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-1_denoised_rician.nii.gz')
 #fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-0_denoised.nii.gz')
 fbval = join(dname, 'elef-scheme.bval')
 fbvec = join(dname, 'elef-scheme.bvec')
-fmask = join(dname, 'ground_truth', 'wm_mask.nii.gz')
+fmask = join(dname, 'ground_truth', 'wm_tractometer.nii') #wm_mask.nii.gz
 
 gtab, data, affine, mask = load_data(fraw, fmask, fbval, fbvec)
 response, ratio = estimate_response(gtab, data, affine, mask, fa_thr=0.7)
 sphere = get_sphere('symmetric724')#.subdivide()
-sphere2 = get_sphere('symmetric724').subdivide()
+#sphere2 = get_sphere('symmetric724').subdivide()
 sphere_regul = get_sphere('symmetric362')
 
 # sphere = sphere2
@@ -928,58 +927,56 @@ save_peaks(dname2, 'sdt_ms_max', peaks, affine)
 ###############
 # GQI & GQI-d #
 ###############
-peaks = gqi(gtab, data, affine, mask, sphere, sl=3., min_angle=25.0, relative_peak_th=0.35)
-print('GQI')
-if visu_odf : show_odfs(peaks, sphere)
-#odf = np.dot(peaks.shm_coeff, peaks.invB)
-save_peaks(dname2, 'gqi', peaks, affine)
 
-###########################################################
-# NOTE: something weird with GQI's amplitude on the sphere
-############################################################
-########
-# GQId #
-########
-sh = peaks.shm_coeff
-fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=ratio,
-                          sh_order=8, lambda_=1., tau=0.1,
-                          r2_term=True)
-odf = np.dot(fodf_sh, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
-peaks.shm_coeff = fodf_sh
-print('GQI sharpened')
-if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname2, 'gqid_sharpened', peaks, affine)
+for sl in [3., 3.2, 3.5, 3.6, 3.8, 4., 4.5]:
 
-# THIS DOES NOT DO WHAT IT IS SUPPOSED TO! And only works with sphere724.
-# GQI d and GQI sharpened should be the same. It's really hard to follow
-# what you tried to do in the GeneralizedQSamplingDeconvModel
-#peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3.5, r2=True)
-#print('GQI d')
-#if visu_odf : show_odfs(peaks, sphere)
-#save_peaks(dname2, 'gqid_broken', peaks, affine)
+    peaks = gqi(gtab, data, affine, mask, sphere, sl=sl, min_angle=25.0, relative_peak_th=0.35)
+    print('GQI')
+    if visu_odf : show_odfs(peaks, sphere)
+    #odf = np.dot(peaks.shm_coeff, peaks.invB)
+    save_peaks(dname2, 'gqi_' + str(sl), peaks, affine)
+
+    ###########################################################
+    # NOTE: something weird with GQI's amplitude on the sphere
+    ############################################################
+    ########
+    # GQId #
+    ########
+    sh = peaks.shm_coeff
+    fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=ratio,
+                              sh_order=8, lambda_=1., tau=0.1,
+                              r2_term=True)
+    odf = np.dot(fodf_sh, peaks.invB)
+    peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
+    peaks.shm_coeff = fodf_sh
+    print('GQI sharpened')
+    if visu_odf : show_odfs(peaks, sphere)
+    save_peaks(dname2, 'gqid_sharpened_' + str(sl), peaks, affine)
 
 
 ###################
 # SHORE & SHORE-D #
 ###################
-# relative peak threshold is really important!
-peaks = shore(gtab, data, affine, mask, sphere, 25, 0.35)
-odf = np.dot(peaks.shm_coeff, peaks.invB)
-print('SHORE')
-if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname2, 'shore', peaks, affine)
 
-sh = peaks.shm_coeff
-fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=0.19,
-                          sh_order=8, lambda_=1., tau=0.1,
-                          r2_term=True)
-odf = np.dot(fodf_sh, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
-peaks.shm_coeff = fodf_sh
-print('SHORE sharpened')
-if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname2, 'shore_sharpened', peaks, affine)
+for zeta in [700, 725, 750, 775, 800]:
+    for order in [6, 8]:
+        # relative peak threshold is really important!
+        peaks = shore(gtab, data, affine, mask, sphere, 25, 0.35, zeta=zeta, order=order)
+        odf = np.dot(peaks.shm_coeff, peaks.invB)
+        print('SHORE')
+        if visu_odf : show_odfs(peaks, sphere)
+        save_peaks(dname2, 'shore_' + str(zeta) + '_' + str(order), peaks, affine)
+
+        sh = peaks.shm_coeff
+        fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=ratio,
+                                  sh_order=8, lambda_=1., tau=0.1,
+                                  r2_term=True)
+        odf = np.dot(fodf_sh, peaks.invB)
+        peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
+        peaks.shm_coeff = fodf_sh
+        print('SHORE sharpened')
+        if visu_odf : show_odfs(peaks, sphere)
+        save_peaks(dname2, 'shore_sharpened_' + '_ratio_corr_' + str(zeta) + '_' + str(order), peaks, affine)
 
 # shape = peaks.peak_dirs.shape
 # directions = peaks.peak_dirs.reshape(shape[:3] + (15,))

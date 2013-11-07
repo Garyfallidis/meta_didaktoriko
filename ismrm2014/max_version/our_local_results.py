@@ -10,6 +10,7 @@ import re
 from os.path import expanduser, join, basename
 from dipy.core.ndindex import ndindex
 from dipy.core.sphere_stats import angular_similarity
+import pandas as pd
 
 
 home = expanduser('~')
@@ -28,13 +29,17 @@ mask = niiWM.get_data()
 if small_crop is True: mask = mask[14:24, 22:23, 23:33]
 if crop is True: mask = mask[:, 22:23, :]
 
-submissions = glob.glob(join(dname, 'fifth_round', "*_dirs.nii.gz"))
+submissions = glob.glob(join(dname, 'sixth_round', "*_new_*_dirs.nii.gz"))
 
 
 def remove_zero_rows(A):
     an = np.sqrt(np.sum(A ** 2, axis=-1))
     return A[np.nonzero(an)]
 
+corrects = []
+overs = []
+unders = []
+names = []
 
 for (i, fdir) in enumerate(sorted(submissions)):
 
@@ -82,11 +87,18 @@ for (i, fdir) in enumerate(sorted(submissions)):
     under = 100 * np.sum(no_of_under) / float(no_mask_voxels)
     correct = 100 * np.sum(no_of_equal) / float(no_mask_voxels)
 
+    overs.append(over)
+    unders.append(under)
+    corrects.append(correct)
+
     print('Percentage of correct %.2f, over %.2f, under %.2f' % (correct, over, under))
     print
-    figure(i)
-    imshow(np.squeeze(no_of_over).T, origin='lower')
-    title(fdir)
+    #figure(i)
+    #imshow(np.squeeze(no_of_over).T, origin='lower')
+    #title(fdir)
+
+df = pd.DataFrame({'correct':corrects, 'over':overs, 'under':under})
+df.to_excel('our_local.xls', sheet_name='Sheet 1')
 
 print('Number of voxels in the mask')
 print(no_mask_voxels)
