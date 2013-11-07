@@ -238,8 +238,7 @@ def pfm(model, data, mask, sphere, parallel=False, min_angle=25.0,
                              sphere=sphere,
                              relative_peak_threshold=relative_peak_th,
                              min_separation_angle=min_angle,
-                             return_odf=True,
-                             #return_odf=False,
+                             return_odf=False,
                              return_sh=True,
                              normalize_peaks=False,
                              sh_order=sh_order,
@@ -436,7 +435,7 @@ def dirs_from_odf(odfs, sphere, relative_peak_threshold=.35,
     return peaks
 
 
-def csd_ms(gtab, data, affine, mask, response, sphere):
+def csd_ms(gtab, data, affine, mask, response, sphere, min_angle=15.0, relative_peak_th=0.35, sh_order=8):
 
     gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
 
@@ -446,7 +445,8 @@ def csd_ms(gtab, data, affine, mask, response, sphere):
         response, ratio = estimate_response(gd[0], gd[1],
                                             affine, mask, fa_thr=0.7)
         model = ConstrainedSphericalDeconvModel(gd[0], response, sh_order=8)
-        peaks = pfm(model, gd[1], mask, sphere)
+        peaks = pfm(model, gd[1], mask, sphere, min_angle=min_angle, relative_peak_th=relative_peak_th,
+                sh_order=sh_order)
         coeffs.append(peaks.shm_coeff)
         invBs.append(peaks.invB)
         #print(peaks.invB)
@@ -456,7 +456,7 @@ def csd_ms(gtab, data, affine, mask, response, sphere):
 
     odf = np.dot(best_coeffs, peaks.invB)
     new_peaks = PeaksAndMetrics()
-    new_peaks.peak_dirs = dirs_from_odf(odf, sphere)
+    new_peaks.peak_dirs = dirs_from_odf(odf, sphere, min_separation_angle = min_angle, relative_peak_threshold = relative_peak_th)
     new_peaks.invB = peaks.invB
     new_peaks.shm_coeff = best_coeffs
 
@@ -469,7 +469,7 @@ def sdt(gtab, data, affine, mask, ratio, sphere, min_angle=25.0, relative_peak_t
     return peaks
 
 
-def sdt_ms(gtab, data, affine, mask, ratio, sphere):
+def sdt_ms(gtab, data, affine, mask, ratio, sphere, min_angle=25.0, relative_peak_th=0.1):
 
     gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
 
@@ -479,7 +479,7 @@ def sdt_ms(gtab, data, affine, mask, ratio, sphere):
         response, ratio = estimate_response(gd[0], gd[1],
                                             affine, mask, fa_thr=0.7)
         model = ConstrainedSDTModel(gd[0], ratio, sh_order=8)
-        peaks = pfm(model, gd[1], mask, sphere)
+        peaks = pfm(model, gd[1], mask, sphere, False, min_angle, relative_peak_th)
         coeffs.append(peaks.shm_coeff)
         invBs.append(peaks.invB)
         #print(peaks.invB)
@@ -489,7 +489,7 @@ def sdt_ms(gtab, data, affine, mask, ratio, sphere):
 
     odf = np.dot(best_coeffs, peaks.invB)
     new_peaks = PeaksAndMetrics()
-    new_peaks.peak_dirs = dirs_from_odf(odf, sphere)
+    new_peaks.peak_dirs = dirs_from_odf(odf, sphere, min_separation_angle = min_angle, relative_peak_threshold = relative_peak_th)
     new_peaks.invB = peaks.invB
     new_peaks.shm_coeff = best_coeffs
 
@@ -704,9 +704,10 @@ def simulated_data(gtab, S0=100, SNR=100):
     return S, ratio
 
 
-visu_odf = True
+visu_odf = False
 home = expanduser('~')
 dname = join(home, 'Data', 'ismrm_2014')
+dname2 = join(home, 'Data', 'ismrm_2014', 'fifth_round')
 #dname = join(home, 'Research/Data/ISMRM_2014/local_reconstruction/')
 
 fraw = join(dname, 'DWIS_elef-scheme_SNR-20.nii.gz')
@@ -722,15 +723,15 @@ sphere = get_sphere('symmetric724')#.subdivide()
 sphere2 = get_sphere('symmetric724').subdivide()
 sphere_regul = get_sphere('symmetric362')
 
-sphere = sphere2
-data = data[14:24, 22:24, 23:33]
-mask = mask[14:24, 22:24, 23:33]
+# sphere = sphere2
+# data = data[14:24, 22:24, 23:33]
+# mask = mask[14:24, 22:24, 23:33]
 
 ##################
 # CSD_MS and CSD #
 ##################
 peaks = csd(gtab, data, affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
-save_peaks(dname, 'csd', peaks, affine)
+save_peaks(dname2, 'csd', peaks, affine)
 print('CSD using all data')
 if visu_odf : show_odfs(peaks, sphere)
 
@@ -746,7 +747,7 @@ if visu_odf : show_odfs(peaks, sphere)
 sh1 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'csd_b1000', peaks, affine)
+save_peaks(dname2, 'csd_b1000', peaks, affine)
 
 
 response, ratio = estimate_response(gd2[0], gd2[1],
@@ -757,7 +758,7 @@ if visu_odf : show_odfs(peaks, sphere)
 sh2 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'csd_b2000', peaks, affine)
+save_peaks(dname2, 'csd_b2000', peaks, affine)
 
 
 response, ratio = estimate_response(gd3[0], gd3[1],
@@ -768,50 +769,56 @@ if visu_odf : show_odfs(peaks, sphere)
 sh3 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'csd_b3000', peaks, affine)
+save_peaks(dname2, 'csd_b3000', peaks, affine)
 
-m = sh1.shape[3]
-fodfs = np.zeros((3, 1, 1, m))
-fodf_sh_max = np.zeros(sh1.shape)
-fodf_sh_ave = np.zeros(sh1.shape)
-for index in ndindex(sh1.shape[:-1]):
-    fodfs[0, :, :, :] = sh1[index]
-    fodfs[1, :, :, :] = sh2[index]
-    fodfs[2, :, :, :] = sh3[index]
-    fodf_sh_max[index][:m] = maxmod(fodfs)
-    fodf_sh_ave[index][:m] = avemod(fodfs)
 
-odf = np.dot(fodf_sh_max, peaks.invB)
-peaks.shm_coeff = fodf_sh_max
-print('CSD MS fusion MaxMod')
-if visu_odf : show_odfs(peaks, sphere)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-save_peaks(dname, 'csd_ms_max', peaks, affine)
+peaks = csd_ms(gtab, data, affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
+save_peaks(dname2, 'csd', peaks, affine)
+print('CSD_ms_max')
 
-print('CSD MS fusion AverageMod')
-odf = np.dot(fodf_sh_ave, peaks.invB)
-peaks.shm_coeff = fodf_sh_ave
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-save_peaks(dname, 'csd_ms_ave', peaks, affine)
-if visu_odf : show_odfs(peaks, sphere)
 
-coeffs3 = np.array(coeffs)
-best_coeffs = max_abs(coeffs3)
-#print(fodf_sh[0,0,5,:])
-#print(best_coeffs[0,0,5,:])
-odf = np.dot(best_coeffs, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-peaks.invB = peaks.invB
-peaks.shm_coeff = best_coeffs
-print('csd_ms model')
-if visu_odf : show_odfs(peaks, sphere)
+# m = sh1.shape[3]
+# fodfs = np.zeros((3, 1, 1, m))
+# fodf_sh_max = np.zeros(sh1.shape)
+# fodf_sh_ave = np.zeros(sh1.shape)
+# for index in ndindex(sh1.shape[:-1]):
+#     fodfs[0, :, :, :] = sh1[index]
+#     fodfs[1, :, :, :] = sh2[index]
+#     fodfs[2, :, :, :] = sh3[index]
+#     fodf_sh_max[index][:m] = maxmod(fodfs)
+#     fodf_sh_ave[index][:m] = avemod(fodfs)
+
+# odf = np.dot(fodf_sh_max, peaks.invB)
+# peaks.shm_coeff = fodf_sh_max
+# print('CSD MS fusion MaxMod')
+# if visu_odf : show_odfs(peaks, sphere)
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# save_peaks(dname2, 'csd_ms_max', peaks, affine)
+
+# print('CSD MS fusion AverageMod')
+# odf = np.dot(fodf_sh_ave, peaks.invB)
+# peaks.shm_coeff = fodf_sh_ave
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# save_peaks(dname2, 'csd_ms_ave', peaks, affine)
+# if visu_odf : show_odfs(peaks, sphere)
+
+# coeffs3 = np.array(coeffs)
+# best_coeffs = max_abs(coeffs3)
+# #print(fodf_sh[0,0,5,:])
+# #print(best_coeffs[0,0,5,:])
+# odf = np.dot(best_coeffs, peaks.invB)
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# peaks.invB = peaks.invB
+# peaks.shm_coeff = best_coeffs
+# print('csd_ms model')
+# if visu_odf : show_odfs(peaks, sphere)
 
 # This works too!
 #print('full csd_ms')
 #peaks = csd_ms(gtab, data, affine, mask, response, sphere)
 #if visu_odf : show_odfs(peaks, sphere)
 #print(peaks.shm_coeff[0,0,5,:])
-save_peaks(dname, 'csd_ms', peaks, affine)
+save_peaks(dname2, 'csd_ms', peaks, affine)
 
 
 ################
@@ -819,7 +826,7 @@ save_peaks(dname, 'csd_ms', peaks, affine)
 ################
 peaks = sdt(gtab, data, affine, mask, ratio, sphere, min_angle=25.0, relative_peak_th=0.1)
 if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname, 'sdt', peaks, affine)
+save_peaks(dname2, 'sdt', peaks, affine)
 
 coeffs = []
 invBs = []
@@ -833,7 +840,7 @@ if visu_odf : show_odfs(peaks, sphere)
 sh1 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'sdt_b1000', peaks, affine)
+save_peaks(dname2, 'sdt_b1000', peaks, affine)
 
 # Quick test
 # print gd1[0].b0s_mask
@@ -850,7 +857,7 @@ save_peaks(dname, 'sdt_b1000', peaks, affine)
 # odf = np.dot(fodf_sh, peaks.invB)
 # peaks.shm_coeff = fodf_sh
 # peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-# save_peaks(dname, 'qball_b1000_sharp', peaks, affine)
+# save_peaks(dname2, 'qball_b1000_sharp', peaks, affine)
 # if visu_odf : show_odfs(peaks, sphere)
 
 response, ratio = estimate_response(gd2[0], gd2[1],
@@ -861,7 +868,7 @@ if visu_odf : show_odfs(peaks, sphere)
 sh2 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'sdt_b2000', peaks, affine)
+save_peaks(dname2, 'sdt_b2000', peaks, affine)
 
 response, ratio = estimate_response(gd3[0], gd3[1],
                                     affine, mask, fa_thr=0.7)
@@ -871,57 +878,61 @@ if visu_odf : show_odfs(peaks, sphere)
 sh3 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
-save_peaks(dname, 'sdt_b3000', peaks, affine)
+save_peaks(dname2, 'sdt_b3000', peaks, affine)
 
-m = sh1.shape[3]
-fodfs = np.zeros((3, 1, 1, m))
-fodf_sh_max = np.zeros(sh1.shape)
-fodf_sh_ave = np.zeros(sh1.shape)
-for index in ndindex(sh1.shape[:-1]):
-    fodfs[0, :, :, :] = sh1[index]
-    fodfs[1, :, :, :] = sh2[index]
-    fodfs[2, :, :, :] = sh3[index]
-    fodf_sh_max[index][:m] = maxmod(fodfs)
-    fodf_sh_ave[index][:m] = avemod(fodfs)
-
-odf = np.dot(fodf_sh_max, peaks.invB)
-peaks.shm_coeff = fodf_sh_max
-print('SDT MS fusion MaxMod')
+peaks = sdt_ms(gtab, data, affine, mask, ratio, sphere, min_angle=25.0, relative_peak_th=0.1)
 if visu_odf : show_odfs(peaks, sphere)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-save_peaks(dname, 'sdt_ms_max', peaks, affine)
+save_peaks(dname2, 'sdt_ms_max', peaks, affine)
 
-print('SDT MS fusion AverageMod')
-odf = np.dot(fodf_sh_ave, peaks.invB)
-peaks.shm_coeff = fodf_sh_ave
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-save_peaks(dname, 'sdt_ms_max', peaks, affine)
-if visu_odf : show_odfs(peaks, sphere)
+# m = sh1.shape[3]
+# fodfs = np.zeros((3, 1, 1, m))
+# fodf_sh_max = np.zeros(sh1.shape)
+# fodf_sh_ave = np.zeros(sh1.shape)
+# for index in ndindex(sh1.shape[:-1]):
+#     fodfs[0, :, :, :] = sh1[index]
+#     fodfs[1, :, :, :] = sh2[index]
+#     fodfs[2, :, :, :] = sh3[index]
+#     fodf_sh_max[index][:m] = maxmod(fodfs)
+#     fodf_sh_ave[index][:m] = avemod(fodfs)
 
-coeffs3 = np.array(coeffs)
-best_coeffs = max_abs(coeffs3)
-odf = np.dot(best_coeffs, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
-peaks.invB = peaks.invB
-peaks.shm_coeff = best_coeffs
-print('sdt_ms model')
-if visu_odf : show_odfs(peaks, sphere)
+# odf = np.dot(fodf_sh_max, peaks.invB)
+# peaks.shm_coeff = fodf_sh_max
+# print('SDT MS fusion MaxMod')
+# if visu_odf : show_odfs(peaks, sphere)
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# save_peaks(dname2, 'sdt_ms_max', peaks, affine)
+
+# print('SDT MS fusion AverageMod')
+# odf = np.dot(fodf_sh_ave, peaks.invB)
+# peaks.shm_coeff = fodf_sh_ave
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# save_peaks(dname2, 'sdt_ms_avg', peaks, affine)
+# if visu_odf : show_odfs(peaks, sphere)
+
+# coeffs3 = np.array(coeffs)
+# best_coeffs = max_abs(coeffs3)
+# odf = np.dot(best_coeffs, peaks.invB)
+# peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+# peaks.invB = peaks.invB
+# peaks.shm_coeff = best_coeffs
+# print('sdt_ms model')
+# if visu_odf : show_odfs(peaks, sphere)
 
 #print(peaks.shm_coeff[0,0,5,:])
 #peaks = sdt_ms(gtab, data, affine, mask, ratio, sphere)
 #print('sdt_ms model 2')
 #if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname, 'sdt_ms', peaks, affine)
+#save_peaks(dname2, 'sdt_ms', peaks, affine)
 #print(peaks.shm_coeff[0,0,5,:])
 
 ###############
 # GQI & GQI-d #
 ###############
-peaks = gqi(gtab, data, affine, mask, sphere, sl=3.5, min_angle=25.0, relative_peak_th=0.1)
+peaks = gqi(gtab, data, affine, mask, sphere, sl=3., min_angle=25.0, relative_peak_th=0.35)
 print('GQI')
 if visu_odf : show_odfs(peaks, sphere)
-odf = np.dot(peaks.shm_coeff, peaks.invB)
-save_peaks(dname, 'gqi', peaks, affine)
+#odf = np.dot(peaks.shm_coeff, peaks.invB)
+save_peaks(dname2, 'gqi', peaks, affine)
 
 ###########################################################
 # NOTE: something weird with GQI's amplitude on the sphere
@@ -934,11 +945,11 @@ fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=ratio,
                           sh_order=8, lambda_=1., tau=0.1,
                           r2_term=True)
 odf = np.dot(fodf_sh, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
+peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
 peaks.shm_coeff = fodf_sh
 print('GQI sharpened')
 if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname, 'gqid_sharpened', peaks, affine)
+save_peaks(dname2, 'gqid_sharpened', peaks, affine)
 
 # THIS DOES NOT DO WHAT IT IS SUPPOSED TO! And only works with sphere724.
 # GQI d and GQI sharpened should be the same. It's really hard to follow
@@ -946,7 +957,7 @@ save_peaks(dname, 'gqid_sharpened', peaks, affine)
 #peaks = gqid(gtab, data, affine, mask, ratio, sphere, sl=3.5, r2=True)
 #print('GQI d')
 #if visu_odf : show_odfs(peaks, sphere)
-#save_peaks(dname, 'gqid_broken', peaks, affine)
+#save_peaks(dname2, 'gqid_broken', peaks, affine)
 
 
 ###################
@@ -957,7 +968,7 @@ peaks = shore(gtab, data, affine, mask, sphere, 25, 0.35)
 odf = np.dot(peaks.shm_coeff, peaks.invB)
 print('SHORE')
 if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname, 'shore', peaks, affine)
+save_peaks(dname2, 'shore', peaks, affine)
 
 sh = peaks.shm_coeff
 fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=0.19,
@@ -968,20 +979,20 @@ peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_sep
 peaks.shm_coeff = fodf_sh
 print('SHORE sharpened')
 if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname, 'shore_sharpened', peaks, affine)
+save_peaks(dname2, 'shore_sharpened', peaks, affine)
 
-shape = peaks.peak_dirs.shape
-directions = peaks.peak_dirs.reshape(shape[:3] + (15,))
-directions = directions.astype('f4')
-prefix = 'shore_sharpened'
-fdirs = join(dname, prefix) + '_dirs.nii.gz'
-Pd, nn, np, AE = evaluate_dirs(fdirs)
-if visu_odf : show_odfs_with_map(odf[:,0,:], sphere, AE)
+# shape = peaks.peak_dirs.shape
+# directions = peaks.peak_dirs.reshape(shape[:3] + (15,))
+# directions = directions.astype('f4')
+# prefix = 'shore_sharpened'
+# fdirs = join(dname, prefix) + '_dirs.nii.gz'
+# Pd, nn, np, AE = evaluate_dirs(fdirs)
+# if visu_odf : show_odfs_with_map(odf[:,0,:], sphere, AE)
 
-visu_dirs = False
-if visu_dirs and visu_odf :
-    dirs = nib.load(fdirs).get_data()
-    show_peak_directions(dirs, x=shape[0], y=shape[1], z=shape[2])
-    gt_dirs = nib.load(join(dname, 'ground_truth', 'peaks.nii.gz')).get_data()
-    gt_dirs = gt_dirs[14:24, 22:24, 23:33]
-    show_peak_directions(gt_dirs, scale=0.7, x=shape[0], y=shape[1], z=shape[2])
+# visu_dirs = False
+# if visu_dirs and visu_odf :
+#     dirs = nib.load(fdirs).get_data()
+#     show_peak_directions(dirs, x=shape[0], y=shape[1], z=shape[2])
+#     gt_dirs = nib.load(join(dname, 'ground_truth', 'peaks.nii.gz')).get_data()
+#     gt_dirs = gt_dirs[14:24, 22:24, 23:33]
+#     show_peak_directions(gt_dirs, scale=0.7, x=shape[0], y=shape[1], z=shape[2])

@@ -63,7 +63,8 @@ def estimate_response(gtab, data, affine, mask, fa_thr=0.7):
     return (evals, S0), evals[1] / evals[0]
 
 
-def pfm(model, data, mask, sphere, relative_peak_threshold=0.3, min_separation_angle=25, parallel=False):
+def pfm(model, data, mask, sphere, relative_peak_threshold=0.1,
+min_separation_angle=25., parallel=False):
     peaks = peaks_from_model(model=model,
                              data=data,
                              mask=mask,
@@ -206,15 +207,16 @@ def dirs_from_odf(odfs, sphere, relative_peak_threshold=.25,
     return peaks
 
 
-def csd_ms(gtab, data, affine, mask, response, sphere):
+def csd_ms(gtab, data, affine, mask, response, sphere, sims=False):
 
     gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
 
     coeffs = []
     invBs = []
     for gd in [gd1, gd2, gd3]:
-        response, ratio = estimate_response(gd[0], gd[1],
-                                            affine, mask, fa_thr=0.7)
+        if not sims:
+            response, ratio = estimate_response(gd[0], gd[1],
+                                                affine, mask, fa_thr=0.7)
         model = ConstrainedSphericalDeconvModel(gd[0], response, sh_order=8)
         peaks = pfm(model, gd[1], mask, sphere)
         coeffs.append(peaks.shm_coeff)
@@ -239,15 +241,16 @@ def sdt(gtab, data, affine, mask, ratio, sphere):
     return peaks
 
 
-def sdt_ms(gtab, data, affine, mask, ratio, sphere):
+def sdt_ms(gtab, data, affine, mask, ratio, sphere, sims=False):
 
     gd1, gd2, gd3 = prepare_data_for_multi_shell(gtab, data, mask)
 
     coeffs = []
     invBs = []
     for gd in [gd1, gd2, gd3]:
-        response, ratio = estimate_response(gd[0], gd[1],
-                                            affine, mask, fa_thr=0.7)
+        if not sims:
+            response, ratio = estimate_response(gd[0], gd[1],
+                                                affine, mask, fa_thr=0.7)
         model = ConstrainedSDTModel(gd[0], ratio, sh_order=8)
         peaks = pfm(model, gd[1], mask, sphere)
         coeffs.append(peaks.shm_coeff)
@@ -484,8 +487,9 @@ def simulated_data(gtab, S0=100, SNR=100):
                              fractions=[50, 50], snr=SNR)
 
     ratio = 3/15.
+    response = (np.array([0.0015, 0.0003, 0.0003]), S0)
 
-    return S, ratio
+    return S, response, ratio
 
 
 home = expanduser('~')
@@ -493,7 +497,9 @@ dname = join(home, 'Data', 'ismrm_2014')
 dname2 = join(home, 'Data', 'ismrm_2014', 'fourth_round')
 
 # fraw = join(dname, 'DWIS_elef-scheme_SNR-20.nii.gz')
-fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-0_denoised.nii.gz')
+# fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-0_denoised.nii.gz')
+fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-1_denoised_rician.nii.gz')
+
 fbval = join(dname, 'elef-scheme.bval')
 fbvec = join(dname, 'elef-scheme.bvec')
 fmask = join(dname, 'ground_truth', 'wm_mask.nii.gz')
@@ -505,28 +511,32 @@ sphere = get_sphere('symmetric724')
 print(response)
 print(ratio)
 
-# S, ratio = simulated_data(gtab, 100, 100)
-# data = S[None, None, None, :]
-# mask = np.ones(data.shape[:3])
+S, response, ratio = simulated_data(gtab, 100, 100)
+data = np.zeros((3, 3, 3) + (data.shape[-1],))
+data[:] = S
+mask = np.ones(data.shape[:3])
+sims = True
 
 #data = data[14:24, 22:23, 23:33]
 #mask = mask[14:24, 22:23, 23:33]
 
 peaks = csd(gtab, data, affine, mask, response, sphere)
-# show_sim_odfs(peaks, sphere, 'csd')
-save_peaks(dname2, 'csd', peaks, affine)
+show_sim_odfs(peaks, sphere, 'csd')
+#save_peaks(dname2, 'csd', peaks, affine)
 
-peaks = csd_ms(gtab, data, affine, mask, response, sphere)
-# show_sim_odfs(peaks, sphere, 'csd_ms')
-save_peaks(dname2, 'csd_ms', peaks, affine)
+peaks = csd_ms(gtab, data, affine, mask, response, sphere, sims=sims)
+show_sim_odfs(peaks, sphere, 'csd_ms')
+#save_peaks(dname2, 'csd_ms', peaks, affine)
 
 peaks = sdt(gtab, data, affine, mask, ratio, sphere)
-# show_sim_odfs(peaks, sphere, 'sdt')
-save_peaks(dname2, 'sdt', peaks, affine)
+show_sim_odfs(peaks, sphere, 'sdt')
+#save_peaks(dname2, 'sdt', peaks, affine)
 
-peaks = sdt_ms(gtab, data, affine, mask, ratio, sphere)
-# show_sim_odfs(peaks, sphere, 'sdt_ms')
-save_peaks(dname2, 'sdt_ms', peaks, affine)
+peaks = sdt_ms(gtab, data, affine, mask, ratio, sphere, sims=sims)
+show_sim_odfs(peaks, sphere, 'sdt_ms')
+#save_peaks(dname2, 'sdt_ms', peaks, affine)
+
+1/0
 
 peaks = gqi(gtab, data, affine, mask, sphere, sl=3.5)
 # show_sim_odfs(peaks, sphere, 'gqi')

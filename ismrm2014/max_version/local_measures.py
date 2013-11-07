@@ -17,7 +17,7 @@ print "-> opening ground-truth...",
 niiGT = nib.load(join(dname, 'ground_truth', 'peaks.nii.gz'))
 niiGT_hdr = niiGT.get_header()
 niiGT_img = niiGT.get_data()
-niiGT_img = niiGT_img[14:24, 22:24, 23:33]
+#niiGT_img = niiGT_img[14:24, 22:24, 23:33]
 
 #niiGT_dim = niiGT_hdr.get_data_shape()
 niiGT_dim = niiGT_img.shape
@@ -37,7 +37,7 @@ print "-> opening white-matter mask...",
 niiWM = nib.load(join(dname, 'ground_truth', 'wm_mask.nii.gz'))
 niiWM_hdr = niiWM.get_header()
 niiWM_img = niiWM.get_data()
-niiWM_img = niiWM_img[14:24, 22:24, 23:33]
+#niiWM_img = niiWM_img[14:24, 22:24, 23:33]
 
 #niiWM_dim = niiWM_hdr.get_data_shape()
 niiWM_dim = niiWM_img.shape
@@ -45,12 +45,11 @@ niiWM_idx = niiWM_img==1
 
 print "[OK]\n"
 
-
 ### load reconstructions
 ########################
 #SUBMISSIONs = glob.glob( "submissions/*.nii.gz" )
 
-SUBMISSIONs = glob.glob(join(dname, "*_dirs.nii.gz"))
+SUBMISSIONs = glob.glob(join(dname, 'fifth_round', "*_dirs.nii.gz"))
 print(SUBMISSIONs)
 
 # prepare EXCEL output
