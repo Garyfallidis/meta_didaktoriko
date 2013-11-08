@@ -284,7 +284,7 @@ for filename in SUBMISSIONs:
     corrects.append(correct)
 
 
-df = pd.DataFrame({'Pd':Pds, 'n+':nPs, 'n-':nMs, 'AE':AEs, 'method':bnames,'correct':corrects, 'over':overs, 'under':under})
+df = pd.DataFrame({'Pd':Pds, 'n+':nPs, 'n-':nMs, 'AE':AEs, 'method':bnames,'correct':corrects, 'over':overs, 'under':unders})
 df.to_excel('local_metrics_fractions_wm.xls', sheet_name='Sheet 1')
 
     # write to EXCEL file

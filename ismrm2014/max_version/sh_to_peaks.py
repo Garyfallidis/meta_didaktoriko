@@ -37,7 +37,8 @@ def dirs_from_odf(odfs, mask, sphere, relative_peak_threshold=.35,
     for index in ndindex(odfs.shape[:-1]):
         if mask[index] > 0:
             vox_peaks, values, _ = peak_directions(odfs[index], sphere,
-                                                   float(relative_peak_threshold),
+                                                   float(
+                                                       relative_peak_threshold),
                                                    float(min_separation_angle))
 
             if peak_normalize is True:
@@ -65,11 +66,11 @@ fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-1_denoised_rician.nii.gz')
 #fraw = join(dname, 'DWIS_elef-scheme_SNR-20_avg-0_denoised.nii.gz')
 fbval = join(dname, 'elef-scheme.bval')
 fbvec = join(dname, 'elef-scheme.bvec')
-#fmask = join(dname, 'ground_truth', 'wm_tractometer.nii') #wm_mask.nii.gz
+# fmask = join(dname, 'ground_truth', 'wm_tractometer.nii') #wm_mask.nii.gz
 fmask = join(dname, 'ground_truth', 'wm_fractions.nii.gz')
 mask = nib.load(fmask).get_data()
-mask[mask>0.9] = 1
-mask[mask<=0.9] = 0
+mask[mask > 0.9] = 1
+mask[mask <= 0.9] = 0
 
 
 from dipy.data import get_sphere
@@ -93,7 +94,8 @@ for (i, fname) in enumerate(sorted(fsh)):
             dirs = dirs_from_odf(odfs, mask, sphere,
                                  relative_peak_threshold=peak_thr,
                                  min_separation_angle=min_angle)
-            fdirs = fdirs_base + '_new2f_' + str(peak_thr) + '_' + str(min_angle) + '_' + '_dirs.nii.gz'
+            fdirs = fdirs_base + '_new2f_' + \
+                str(peak_thr) + '_' + str(min_angle) + '_' + '_dirs.nii.gz'
 
             print(fname)
             print(finvB)
