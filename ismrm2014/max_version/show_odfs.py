@@ -9,6 +9,7 @@ from numpy.linalg import norm
 
 def show_odfs(fpng, odf_sh, invB, sphere):
     ren = fvtk.ren()
+    ren.SetBackground(1, 1, 1.)
     odf = np.dot(odf_sh, invB)
     print(odf.shape)
     odf = odf[14:24, 22, 23:33]
@@ -21,6 +22,7 @@ def show_odfs(fpng, odf_sh, invB, sphere):
     fvtk.record(ren, n_frames=1, out_path=fpng, size=(900, 900))
     fvtk.clear(ren)
 
+
 def show_peak_directions(fpng, peaks, scale=0.3, x=10, y=0, z=10):
     r = fvtk.ren()
 
@@ -32,7 +34,10 @@ def show_peak_directions(fpng, peaks, scale=0.3, x=10, y=0, z=10):
         for i in xrange(directions.shape[0]):
             if norm(directions[i]) != 0:
                 line_actor = fvtk.line(index +
-                                       scale * np.vstack((-directions[i], directions[i])),
+                                       scale *
+                                       np.vstack(
+                                       (-directions[
+                                        i], directions[i])),
                                        abs(directions[i] / norm(directions[i])))
                 line_actor.RotateX(-90)
                 fvtk.add(r, line_actor)
@@ -47,7 +52,7 @@ dname = join(home, 'Data', 'ismrm_2014', 'fifth_round')
 
 from dipy.data import get_sphere
 
-# sphere = get_sphere('symmetric724')#.subdivide()
+sphere = get_sphere('symmetric724')#.subdivide()
 # sphere2 = get_sphere('symmetric724')
 # fsh = glob(join(dname, "*_sh.nii.gz"))
 # for (i, fname) in enumerate(fsh):
@@ -58,11 +63,38 @@ from dipy.data import get_sphere
 #     invB = np.loadtxt(finvB)
 #     show_odfs(fname_base + "_odfs.png", odf_sh, invB, sphere)
 
-fdirs = glob(join(dname, "*_dirs.nii.gz"))
-for (i, fname) in enumerate(fdirs):
-    fname_base = fname.split('_dirs.nii.gz')[0]
-    print(fname_base + "_dirs.png")
-    dirs = nib.load(fname).get_data()
-    dirs = dirs[:, 22:23, :]
-    show_peak_directions(fname_base + "_dirs.png", dirs, x=50, y=0, z=50)
-    # Pd, nn, np, AE = evaluate_dirs(dirs)
+# fdirs = glob(join(dname, "*_dirs.nii.gz"))
+# for (i, fname) in enumerate(fdirs):
+#     fname_base = fname.split('_dirs.nii.gz')[0]
+#     print(fname_base + "_dirs.png")
+#     dirs = nib.load(fname).get_data()
+#     dirs = dirs[:, 22:23, :]
+#     show_peak_directions(fname_base + "_dirs.png", dirs, x=50, y=0, z=50)
+# Pd, nn, np, AE = evaluate_dirs(dirs)
+
+
+local_res = ['shore_800_8_new2_0.8_25.0__dirs.nii.gz',
+             'shore_sharpened_800_6_new2_0.7_20.0__dirs.nii.gz',
+             'gqi_3.0_new2_0.9_20.0__dirs.nii.gz'
+             'gqid_sharpened_3.0_new2_0.9_20.0__dirs.nii.gz'
+             'sdt_ms_max_new2_0.9_20.0__dirs.nii.gz'
+             'csd_b2000_new2_1.0_25.0__dirs.nii.gz']
+
+basenames = ['shore_800_8_odf_sh.nii.gz',
+             'shore_sharpened_800_6_odf_sh.nii.gz',
+             'gqi_3.0_odf_sh.nii.gz',
+             'gqid_sharpened_3.0_odf_sh.nii.gz',
+             'sdt_ms_max_odf_sh.nii.gz',
+             'csd_b2000_odf_sh.nii.gz']
+
+dresults = '/home/eleftherios/Data/ismrm_2014/sixth_round/'
+
+for bname in basenames:
+    fname = dresults + bname
+    print(fname)
+    fname_base = fname.split('_odf_sh.nii.gz')[0]
+    print(fname_base + "_odfs_final.png")
+    finvB = fname_base + "_invB.txt"
+    odf_sh = nib.load(fname).get_data()
+    invB = np.loadtxt(finvB)
+    show_odfs(fname_base + "_odfs_final.png", odf_sh, invB, sphere)
