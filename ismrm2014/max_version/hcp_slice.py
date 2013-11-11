@@ -721,38 +721,56 @@ fraw = dname + 'dwi_1x1x1.nii'
 fbval = dname + 'bvals'
 fbvec = dname + 'bvecs'
 fmask = dname + 'dwi_mask_1x1x1.nii.gz'
+fpng = 'shore_fa_w15.png'
+fpng2 = 'shored_fa_w15.png'
 
 gtab, data, affine, mask = load_data(fraw, fmask, fbval, fbvec)
 
 w = 15
-data = data [70-w:70+w, 143:144, 67-w:67+w]
+data = data[70-w:70+w, 143-w:143+w, 67:68]
+mask = mask[70-w:70+w, 143-w:143+w, 67:68]
 
 response, ratio = estimate_response(gtab, data, affine, mask, fa_thr=0.7)
 sphere = get_sphere('symmetric724')#.subdivide()
 #sphere2 = get_sphere('symmetric724').subdivide()
 sphere_regul = get_sphere('symmetric362')
 
+fa_map = TensorModel(gtab).fit(data, mask).fa
+
+
+
 # sphere = sphere2
 # data = data[14:24, 22:24, 23:33]
 # mask = mask[14:24, 22:24, 23:33]
 
-zeta = 800
+def show_odfs_with_map2(odf, sphere, map, w, fpng):
+    ren = fvtk.ren()
+    sfu = fvtk.sphere_funcs(odf, sphere, norm=True)
+    #sfu.RotateX(-90)
+    sfu.SetPosition(w, w, 1)
+    sfu.SetScale(0.435)
+
+    sli = fvtk.slicer(map, plane_i=None, plane_k=[0], outline=False)
+    #sli.RotateX(-90)
+    fvtk.add(ren, sli)
+    fvtk.add(ren, sfu)
+    #fvtk.add(ren, fvtk.axes((20, 20, 20)))
+
+    #fvtk.show(ren)
+    fvtk.record(ren, n_frames=1, out_path=fpng, magnification=2, size=(900, 900))
+
+zeta = 775
 order = 6
 # relative peak threshold is really important!
 peaks = shore(gtab, data, affine, mask, sphere, 25, 0.35, zeta=zeta, order=order)
 odf = np.dot(peaks.shm_coeff, peaks.invB)
-print('SHORE')
-if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname2, 'shore_' + str(zeta) + '_' + str(order), peaks, affine)
+show_odfs_with_map2(odf, sphere, fa_map, w, fpng)
 
 sh = peaks.shm_coeff
 fodf_sh = odf_sh_to_sharp(sh, sphere, basis='mrtrix', ratio=ratio,
                           sh_order=8, lambda_=1., tau=0.1,
                           r2_term=True)
 odf = np.dot(fodf_sh, peaks.invB)
-peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.2, min_separation_angle=25.)
-peaks.shm_coeff = fodf_sh
-print('SHORE sharpened')
-if visu_odf : show_odfs(peaks, sphere)
-save_peaks(dname2, 'shore_sharpened_' + '_ratio_corr_' + str(zeta) + '_' + str(order), peaks, affine)
+show_odfs_with_map2(odf, sphere, fa_map, w, fpng2)
+
 
