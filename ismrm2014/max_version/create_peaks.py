@@ -278,8 +278,9 @@ def peaks_to_odf(peaks):
         raise ValueError("peaks does not have attribute shm_coeff")
 
 
-def show_odfs(peaks, sphere):
+def show_odfs(peaks, sphere, fname):
     ren = fvtk.ren()
+    ren.SetBackground(1, 1, 1.)
     odf = np.dot(peaks.shm_coeff, peaks.invB)
     #odf = odf[14:24, 22, 23:33]
     #odf = odf[:, 22, :]
@@ -288,6 +289,7 @@ def show_odfs(peaks, sphere):
     sfu.RotateX(-90)
     fvtk.add(ren, sfu)
     fvtk.show(ren)
+    fvtk.record(ren, n_frames=1, out_path=fname, size=(600, 600))
 
 
 def show_odfs_with_map(odf, sphere, map):
@@ -732,7 +734,7 @@ mask = mask[14:24, 22:24, 23:33]
 peaks = csd(gtab, data, affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
 save_peaks(dname, 'csd', peaks, affine)
 print('CSD using all data')
-if visu_odf : show_odfs(peaks, sphere)
+if visu_odf : show_odfs(peaks, sphere, 'csd_ms.png')
 
 coeffs = []
 invBs = []
@@ -742,7 +744,7 @@ response, ratio = estimate_response(gd1[0], gd1[1],
                                     affine, mask, fa_thr=0.7)
 peaks = csd(gd1[0], gd1[1], affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
 print('CSD b 1000')
-if visu_odf : show_odfs(peaks, sphere)
+if visu_odf : show_odfs(peaks, sphere, 'csd_b1000.png')
 sh1 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
@@ -753,18 +755,17 @@ response, ratio = estimate_response(gd2[0], gd2[1],
                                     affine, mask, fa_thr=0.7)
 peaks = csd(gd2[0], gd2[1], affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
 print('CSD b 2000')
-if visu_odf : show_odfs(peaks, sphere)
+if visu_odf : show_odfs(peaks, sphere, 'csd_b2000.png')
 sh2 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
 save_peaks(dname, 'csd_b2000', peaks, affine)
 
-
 response, ratio = estimate_response(gd3[0], gd3[1],
                                     affine, mask, fa_thr=0.7)
 peaks = csd(gd3[0], gd3[1], affine, mask, response, sphere, min_angle=25.0, relative_peak_th=0.1)
 print('CSD b 3000')
-if visu_odf : show_odfs(peaks, sphere)
+if visu_odf : show_odfs(peaks, sphere, 'csd_b3000.png')
 sh3 = peaks.shm_coeff
 coeffs.append(peaks.shm_coeff)
 invBs.append(peaks.invB)
@@ -784,9 +785,12 @@ for index in ndindex(sh1.shape[:-1]):
 odf = np.dot(fodf_sh_max, peaks.invB)
 peaks.shm_coeff = fodf_sh_max
 print('CSD MS fusion MaxMod')
-if visu_odf : show_odfs(peaks, sphere)
+if visu_odf : show_odfs(peaks, sphere, 'csd_maxmod.png')
 peaks.peak_dirs = dirs_from_odf(odf, sphere, relative_peak_threshold=.1, min_separation_angle=25.)
 save_peaks(dname, 'csd_ms_max', peaks, affine)
+
+1/0
+
 
 print('CSD MS fusion AverageMod')
 odf = np.dot(fodf_sh_ave, peaks.invB)
