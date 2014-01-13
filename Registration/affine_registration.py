@@ -27,7 +27,7 @@ parser.add_argument('out_file', action='store', metavar='out_file',
 
 parser.add_argument('--similarity', action='store', metavar='String',
                     help="Cost-function for assessing image similarity. If a string, one of 'cc': correlation coefficient, 'cr': correlation ratio, 'crl1': L1-norm based correlation ratio, 'mi': mutual information, 'nmi': normalized mutual information, 'slr': supervised log-likelihood ratio. If a callable, it should take a two-dimensional array representing the image joint histogram as an input and return a float.",
-                    default='cc')
+                    default='crl1')
 
 parser.add_argument('--interp', action='store', metavar='String',
                    help="'Interpolation method.One of 'pv': Partial volume, 'tri':Trilinear, 'rand': Random interpolation'",
@@ -47,8 +47,8 @@ if __name__ == '__main__':
     static = nifti2nipy(nib.load(fstatic))
     moving = nifti2nipy(nib.load(fmoving))
 
-    similarity = 'crl1' # 'cc', 'mi', 'nmi', 'cr', 'slr'
-    interp = 'pv' # 'tri',
+    similarity = params.similarity #'crl1' 'cc', 'mi', 'nmi', 'cr', 'slr'
+    interp = params.interp #'pv', 'tri',
     renormalize = True
     optimizer = 'powell'
 
