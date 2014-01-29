@@ -75,7 +75,12 @@ static_copy = fornix_streamlines()[:20]
 
 moving = fornix_streamlines()[20:40]
 
-mat = matrix44([0, 0, 30, 45, 0, 0])
+t = np.random.randint(50)
+angle = np.random.randint(45)
+
+mat = matrix44([0, 0, t, angle, 0, 0])
+print(t, angle)
+
 moving = transform_streamlines(moving, mat)
 
 srr = StreamlineRigidRegistration(mdf_optimization_min, 
@@ -86,7 +91,7 @@ srp = srr.optimize(static, moving)
 
 moved = srp.transform(moving)
 
-show_bundles(static, moving)
-show_bundles(static, moved)
+#show_bundles(static, moving)
+#show_bundles(static, moved)
 
 create_video(static, moving, srp)
