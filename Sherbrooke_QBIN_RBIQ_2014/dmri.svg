@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="686.14661"
+   height="623.12042"
+   id="svg3134"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="dmri.svg">
+  <defs
+     id="defs3136" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="274.54369"
+     inkscape:cy="315.64689"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1856"
+     inkscape:window-height="1176"
+     inkscape:window-x="64"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata3139">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(3.7726461,-124.14993)">
+    <path
+       style="fill:#e0f0ff;fill-opacity:1;stroke:#23a57b;stroke-width:2.34578204;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 91.35864,162.5297 C -4.9839546,234.46075 -34.873822,362.5753 37.797164,454.24155 116.47099,566.45355 275.31715,643.14905 433.89722,634.28647 530.02512,627.81149 614.11151,572.38544 646.88562,498.2901 690.7173,419.02699 700.70297,316.88824 627.94311,246.53997 525.20046,145.54943 348.35138,108.55838 194.55378,132.22244 158.62154,138.17376 123.07186,147.0894 91.35864,162.5297 z"
+       id="rect3763"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="87.844383"
+       y="188.48447"
+       id="text3881"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3883"
+         x="87.844383"
+         y="188.48447">Diffusion MRI</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.84037662;stroke-opacity:1"
+       id="rect3885"
+       width="142.07298"
+       height="60.384556"
+       x="180.67845"
+       y="231.14766"
+       ry="13.436035" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="196.49431"
+       y="254.20898"
+       id="text3909"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="196.49431"
+         y="254.20898"
+         id="tspan3913"><tspan
+           style="font-size:18px;font-weight:normal;-inkscape-font-specification:Bitstream Charter"
+           id="tspan3995"><tspan
+             style="font-size:18px;font-weight:normal;-inkscape-font-specification:Bitstream Charter"
+             id="tspan3997"><tspan
+               style="font-size:18px;font-weight:bold"
+               id="tspan3999">reconstuction </tspan></tspan></tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="197.05232"
+       y="275.73798"
+       id="text3225"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="197.05232"
+         y="275.73798"
+         id="tspan3229">voxel modeling </tspan></text>
+    <rect
+       ry="13.448998"
+       y="306.87997"
+       x="38.217823"
+       height="60.442818"
+       width="122.93835"
+       id="rect3208"
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.78211623;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3210"
+       y="329.97043"
+       x="54.062809"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3212"
+         y="329.97043"
+         x="54.062809"
+         sodipodi:role="line"
+         style="font-weight:bold">denoising</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3220"
+       y="351.49942"
+       x="54.620823"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         id="tspan3222"
+         y="351.49942"
+         x="54.620823"
+         sodipodi:role="line">increase SNR </tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3224"
+       width="162.21886"
+       height="60.327374"
+       x="204.95071"
+       y="360.47577"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="230.73798"
+       y="383.50851"
+       id="text3226"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="230.73798"
+         y="383.50851"
+         id="tspan3228">segmentation</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="221.29599"
+       y="405.03751"
+       id="text3230"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="221.29599"
+         y="405.03751"
+         id="tspan3232">e.g. brain extraction</tspan></text>
+    <rect
+       ry="13.423311"
+       y="360.47577"
+       x="204.95071"
+       height="60.327374"
+       width="162.21886"
+       id="rect3249"
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3251"
+       y="383.50851"
+       x="230.73798"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3253"
+         y="383.50851"
+         x="230.73798"
+         sodipodi:role="line"
+         style="font-weight:bold">segmentation</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3255"
+       y="405.03751"
+       x="221.29599"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         id="tspan3257"
+         y="405.03751"
+         x="221.29599"
+         sodipodi:role="line">e.g. brain extraction</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3224-1"
+       width="162.21886"
+       height="60.327374"
+       x="360.32724"
+       y="231.24905"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="386.1145"
+       y="254.2818"
+       id="text3226-6"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="386.1145"
+         y="254.2818"
+         id="tspan3228-9">fiber tracking</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="376.67252"
+       y="275.81079"
+       id="text3230-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="376.67252"
+         y="275.81079"
+         id="tspan3232-1">approximate nerves</tspan></text>
+    <rect
+       ry="13.423311"
+       y="358.45547"
+       x="400.92032"
+       height="60.327374"
+       width="162.21886"
+       id="rect3274"
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3276"
+       y="381.48822"
+       x="426.70758"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3278"
+         y="381.48822"
+         x="426.70758"
+         sodipodi:role="line"
+         style="font-weight:bold">segmentation</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3280"
+       y="403.01721"
+       x="417.26559"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         id="tspan3282"
+         y="403.01721"
+         x="417.26559"
+         sodipodi:role="line">e.g. brain extraction</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3284"
+       width="162.21886"
+       height="60.327374"
+       x="400.92032"
+       y="358.45547"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="426.70758"
+       y="381.48822"
+       id="text3286"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="426.70758"
+         y="381.48822"
+         id="tspan3288">visualization</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="440.49911"
+       y="402.00705"
+       id="text3290"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="440.49911"
+         y="402.00705"
+         id="tspan3292">2D, 3D, 4D</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3296"
+       width="162.21886"
+       height="60.327374"
+       x="204.95071"
+       y="360.47577"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="230.73798"
+       y="383.50851"
+       id="text3298"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="230.73798"
+         y="383.50851"
+         id="tspan3300">segmentation</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="221.29599"
+       y="405.03751"
+       id="text3302"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="221.29599"
+         y="405.03751"
+         id="tspan3304">e.g. brain extraction</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3224-8"
+       width="162.21886"
+       height="60.327374"
+       x="152.23581"
+       y="467.62476"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="188.02307"
+       y="486.6575"
+       id="text3226-4"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="188.02307"
+         y="486.6575"
+         id="tspan3228-7">alignment</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="168.58109"
+       y="504.18646"
+       id="text3230-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="168.58109"
+         y="504.18646"
+         id="tspan3232-4">linear &amp; non-linear</tspan><tspan
+         sodipodi:role="line"
+         x="168.58109"
+         y="521.68646"
+         id="tspan3321">registration</tspan></text>
+    <rect
+       style="fill:#99e3cb;fill-opacity:1;stroke:#009d79;stroke-width:0.89755929;stroke-opacity:1"
+       id="rect3224-1-4"
+       width="162.21886"
+       height="60.327374"
+       x="373.45923"
+       y="461.56381"
+       ry="13.423311" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="399.24649"
+       y="484.59656"
+       id="text3226-6-9"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="399.24649"
+         y="484.59656"
+         id="tspan3228-9-1">file handling</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Sans"
+       x="394.85526"
+       y="501.09512"
+       id="text3230-1-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="394.85526"
+         y="501.09512"
+         id="tspan3232-1-3">medical imaging </tspan><tspan
+         sodipodi:role="line"
+         x="394.85526"
+         y="518.59509"
+         id="tspan3064">formats</tspan></text>
+    <rect
+       ry="8.5987902"
+       y="644.34369"
+       x="40.556232"
+       height="38.644894"
+       width="173.78035"
+       id="rect3208-8"
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.7435354;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3210-3"
+       y="669.45447"
+       x="53.370758"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3212-6"
+         y="669.45447"
+         x="53.370758"
+         sodipodi:role="line"
+         style="font-weight:bold">Machine Learning</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.7435354;stroke-opacity:1"
+       id="rect3901"
+       width="173.78035"
+       height="38.644894"
+       x="240.55621"
+       y="644.34369"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="253.37076"
+       y="669.45447"
+       id="text3903"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="253.37076"
+         y="669.45447"
+         id="tspan3905">Signal Processing</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.68099415;stroke-opacity:1"
+       id="rect3901-0"
+       width="145.77536"
+       height="38.644894"
+       x="444.45007"
+       y="644.13104"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="457.26462"
+       y="669.24182"
+       id="text3903-5"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="457.26462"
+         y="669.24182"
+         id="tspan3905-6">Neuroanatomy</tspan></text>
+    <rect
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.64468378;stroke-opacity:1"
+       id="rect3931"
+       width="130.64441"
+       height="38.644894"
+       x="164.80499"
+       y="708.3031"
+       ry="8.5987902" />
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="177.61952"
+       y="733.41388"
+       id="text3933"
+       sodipodi:linespacing="125%"><tspan
+         style="font-weight:bold"
+         sodipodi:role="line"
+         x="177.61952"
+         y="733.41388"
+         id="tspan3935">Coding Skills </tspan></text>
+    <rect
+       ry="8.5987902"
+       y="706.28278"
+       x="379.9675"
+       height="38.644894"
+       width="130.64441"
+       id="rect3937"
+       style="fill:#b892ff;fill-opacity:1;stroke:#000000;stroke-width:0.64468378;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3939"
+       y="731.39355"
+       x="392.78201"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       xml:space="preserve"><tspan
+         id="tspan3941"
+         y="731.39355"
+         x="392.78201"
+         sodipodi:role="line"
+         style="font-weight:bold">Model Fitting</tspan></text>
+  </g>
+</svg>
