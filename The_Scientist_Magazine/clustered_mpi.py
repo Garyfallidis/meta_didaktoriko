@@ -59,8 +59,13 @@ def show_all_bundles(start, end):
         fvtk.add(ren, bun_actor)
 
     fvtk.show(ren, size=(1800, 1000))
-    fvtk.record(ren, n_frames=1, out_path='segmented_white_matter_0.5.png', 
-                magnification=10)
+    #fvtk.record(ren, n_frames=100, out_path='test.png', 
+    #            magnification=1)
+    fvtk.record(ren, size=(1800, 1000), n_frames=100, out_path='test.png', 
+                path_numbering=True, magnification=1)
+
+    # Convert to gif with this
+    #convert -delay 10 -loop 0 test.png*.png animation.gif
 
 
 def show(fname):
@@ -75,9 +80,9 @@ def show(fname):
 
 
 
-# show_all_bundles(0, 17)
+show_all_bundles(0, 17)
 
 
 
-fname = '/home/eleftherios/dp/doc/examples/SphereDeconv_Detr.trk'
-show(fname)
+#fname = '/home/eleftherios/dp/doc/examples/SphereDeconv_Detr.trk'
+#show(fname)
