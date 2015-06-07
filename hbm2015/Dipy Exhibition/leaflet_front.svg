@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="792pt"
+   height="612pt"
+   id="svg5529"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="leaflet_front.svg">
+  <defs
+     id="defs5531" />
+  <sodipodi:namedview
+     inkscape:document-units="in"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.86831672"
+     inkscape:cx="223.97202"
+     inkscape:cy="344.88885"
+     inkscape:current-layer="layer1"
+     id="namedview5533"
+     showgrid="false"
+     units="in"
+     inkscape:window-width="1855"
+     inkscape:window-height="1176"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5535">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       sodipodi:linespacing="130.99999%"
+       id="text6210"
+       y="25.665064"
+       x="374.90939"
+       style="font-size:18.49941444px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:130.99999428%;letter-spacing:0px;word-spacing:0px;fill:#ff6600;fill-opacity:1;stroke:none;display:inline;font-family:Standard Symbols L;-inkscape-font-specification:Asana Math Bold"
+       xml:space="preserve"><tspan
+         y="25.665064"
+         x="374.90939"
+         id="tspan6212"
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:130.99999428%;font-family:Asana Math;-inkscape-font-specification:Asana Math Bold">Diffusion Imaging in Python</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:15.86631012px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="414.67239"
+       y="53.022377"
+       id="text6319"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6321"
+         x="414.67239"
+         y="53.022377"
+         style="font-weight:bold;fill:#000000;-inkscape-font-specification:Sans Bold">http://dipy.org</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="17.3671"
+       y="144.25876"
+       id="text5913"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="17.3671"
+         y="144.25876"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6435">Diffusion MRI  is the absolute method for</tspan><tspan
+         sodipodi:role="line"
+         x="17.3671"
+         y="161.75876"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6439">understanding brain structure in vivo. </tspan><tspan
+         sodipodi:role="line"
+         x="17.3671"
+         y="179.25876"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6441" /><tspan
+         sodipodi:role="line"
+         x="17.3671"
+         y="196.75876"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6445" /></text>
+    <rect
+       style="fill:none;stroke:#5599ff;stroke-width:4.10122061;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5919"
+       width="309.797"
+       height="430.42093"
+       x="13.819843"
+       y="124.68065" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text6465"
+       y="207.09798"
+       x="24.382969"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         id="tspan6473"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="207.09798"
+         x="24.382969"
+         sodipodi:role="line">However, while people with mental </tspan><tspan
+         id="tspan6475"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="224.59798"
+         x="24.382969"
+         sodipodi:role="line">disorders continue to suffer we still avoid</tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="242.09798"
+         x="24.382969"
+         sodipodi:role="line"
+         id="tspan6485">to coordinate our scientific efforts.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="21.84483"
+       y="283.09799"
+       id="text6487"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan6493"
+         sodipodi:role="line"
+         x="21.84483"
+         y="283.09799"
+         style="font-size:14px;text-align:start;text-anchor:start">Such a problem necessitates the</tspan><tspan
+         sodipodi:role="line"
+         x="21.84483"
+         y="300.59799"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6500">collaboration across labs and countries.</tspan><tspan
+         sodipodi:role="line"
+         x="21.84483"
+         y="318.09799"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6610" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6514"
+       y="344.00787"
+       x="23.933834"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="344.00787"
+         x="23.933834"
+         sodipodi:role="line"
+         id="tspan6524">DIPY is an international software project </tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="361.50787"
+         x="23.933834"
+         sodipodi:role="line"
+         id="tspan6522">which gathers scientists from all over the </tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="379.00787"
+         x="23.933834"
+         sodipodi:role="line"
+         id="tspan6542">world to work on the same codebase.</tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="396.50787"
+         x="23.933834"
+         sodipodi:role="line"
+         id="tspan6534" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6550"
+       y="495.09799"
+       x="21.84483"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         id="tspan6554"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="495.09799"
+         x="21.84483"
+         sodipodi:role="line">With this vision DIPY has assembled a</tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="512.59796"
+         x="21.84483"
+         sodipodi:role="line"
+         id="tspan6612">growing team of 32 contributors from </tspan><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="530.09796"
+         x="21.84483"
+         sodipodi:role="line"
+         id="tspan6614">more than 12 Universities.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="23.220345"
+       y="415.41446"
+       id="text6487-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="23.220345"
+         y="415.41446"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6500-3">No specific direction is enforced apart </tspan><tspan
+         sodipodi:role="line"
+         x="23.220345"
+         y="432.91446"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6606">from the requirement for documentation, </tspan><tspan
+         sodipodi:role="line"
+         x="23.220345"
+         y="450.41446"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6608">testing and quality assurance.</tspan><tspan
+         sodipodi:role="line"
+         x="23.220345"
+         y="467.91446"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6604" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="134.16762"
+       y="106.83002"
+       id="text6616"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6618"
+         x="134.16762"
+         y="106.83002">Why</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="42.574593"
+       y="540.60999"
+       id="text6620"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan6626"
+         sodipodi:role="line"
+         x="42.574593"
+         y="540.60999"
+         style="font-size:14px;text-align:start;text-anchor:start" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="681.66821"
+       y="463.39182"
+       id="text5913-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="681.66821"
+         y="463.39182"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6439-6">USERS</tspan><tspan
+         sodipodi:role="line"
+         x="681.66821"
+         y="480.89182"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6441-0" /><tspan
+         sodipodi:role="line"
+         x="681.66821"
+         y="498.39182"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6445-7" /></text>
+    <rect
+       style="fill:none;stroke:#5599ff;stroke-width:4.86;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5919-5"
+       width="309.797"
+       height="317.45758"
+       x="668.36267"
+       y="430.7363" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text6465-8"
+       y="518.23102"
+       x="682.68408"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="518.23102"
+         x="682.68408"
+         sodipodi:role="line"
+         id="tspan6485-7">DEVELOPERS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="680.14594"
+       y="594.23108"
+       id="text6487-05"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="680.14594"
+         y="594.23108"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6610-6">PROFESSORS</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text6514-3"
+       y="655.14099"
+       x="682.23492"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:14px;text-align:start;text-anchor:start"
+         y="655.14099"
+         x="682.23492"
+         sodipodi:role="line"
+         id="tspan6534-5">COMPANIES</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="681.52142"
+       y="726.54755"
+       id="text6487-0-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="681.52142"
+         y="726.54755"
+         style="font-size:14px;text-align:start;text-anchor:start"
+         id="tspan6604-0">MEDIA</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="768.28394"
+       y="412.3645"
+       id="text6616-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6618-6"
+         x="768.28394"
+         y="412.3645">Contact</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="463.16522"
+       y="99.499779"
+       id="text6616-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6618-8"
+         x="463.16522"
+         y="99.499779">What</tspan></text>
+    <rect
+       y="124.68065"
+       x="341.81982"
+       height="609.70105"
+       width="309.797"
+       id="rect6789"
+       style="fill:none;stroke:#5599ff;stroke-width:4.86;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text6803"
+       y="96.117722"
+       x="791.38647"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="96.117722"
+         x="791.38647"
+         id="tspan6805"
+         sodipodi:role="line">How</tspan></text>
+    <rect
+       style="fill:none;stroke:#5599ff;stroke-width:6.17102909;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect6807"
+       width="309.797"
+       height="257.06726"
+       x="668.8894"
+       y="124.77026" />
+  </g>
+</svg>
