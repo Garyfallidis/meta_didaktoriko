@@ -6,6 +6,28 @@ from dipy.segment.metric import AveragePointwiseEuclideanMetric
 from dipy.tracking.streamline import set_number_of_points, select_random_set_of_streamlines
 from time import time
 from ipdb import set_trace
+from dipy.segment.clustering import ClusterMapCentroid
+
+
+def quickbundles_with_merging(streamlines, qb, ordering=None):
+    cluster_map = qb.cluster(streamlines, ordering=ordering)
+    if len(streamlines) == len(cluster_map):
+        return cluster_map
+
+    qb_for_merging = QuickBundles(metric=qb.metric, threshold=qb.threshold)
+    clusters = quickbundles_with_merging(cluster_map.centroids, qb_for_merging, None)
+
+    merged_clusters = ClusterMapCentroid()
+    for cluster in clusters:
+        merged_cluster = ClusterCentroid(centroid=cluster.centroid)
+
+        for i in cluster.indices:
+            merged_cluster.indices.extend(cluster_map[i].indices)
+
+        merged_clusters.add_cluster(merged_cluster)
+
+    merged_clusters.refdata = cluster_map.refdata
+    return merged_clusters
 
 
 dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
@@ -67,11 +89,27 @@ for nb in nb_range:
 #    qbx_clusters_4 = qbx_clusters.get_clusters(4)
 #    qbx_clusters_5 = qbx_clusters.get_clusters(5)
 
+    qbx_merge = QuickBundlesX([thresholds[-1]],
+                              metric=AveragePointwiseEuclideanMetric())
+
+    qbx_ordering_final = np.random.choice(
+        len(qbx_clusters.get_clusters(len(thresholds))),
+        len(qbx_clusters.get_clusters(len(thresholds))), replace=False)
+
+    qbx_merge_clusters = qbx_merge.cluster(
+        qbx_clusters.get_clusters(len(thresholds)).centroids,
+        ordering=qbx_ordering_final)
+
+    qbx_merge_clusters_final = qbx_merge_clusters.get_clusters(1)
+
     print(' First level clusters {}'.format(len(qbx_clusters_1)))
     print(' Second level clusters {}'.format(len(qbx_clusters_2)))
     print(' Third level clusters {}'.format(len(qbx_clusters_3)))
+    print(' Merged clusters {}'.format(len(qbx_merge_clusters_final)))
+
 #    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
 #    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
+
     print('\n')
 
     t = time()
@@ -82,8 +120,18 @@ for nb in nb_range:
     print(' QB time {}'.format(dt2))
     qb_times.append(dt2)
     print(' Clusters {}'.format(len(qb_clusters)))
-    print('\n')
 
+
+    qb_ordering_final = np.random.choice(len(qb_clusters),
+                                         len(qb_clusters), replace=False)
+
+    qb_merge = QuickBundles(thresholds[-1],
+                            metric=AveragePointwiseEuclideanMetric())
+    qb_merge_clusters_final = qb_merge.cluster(qb_clusters.centroids,
+                                               ordering=qb_ordering_final)
+    print(' Merged clusters {}'.format(len(qb_merge_clusters_final)))
+
+    print('\n')
     print('Speedup {}X'.format(dt2/dt))
     print('\n')
 
