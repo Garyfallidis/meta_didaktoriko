@@ -3,7 +3,7 @@ import nibabel as nib
 from dipy.viz import actor, window
 from dipy.segment.clustering import QuickBundles, QuickBundlesX
 from dipy.segment.metric import AveragePointwiseEuclideanMetric
-from dipy.tracking.streamline import set_number_of_points
+from dipy.tracking.streamline import set_number_of_points, select_random_set_of_streamlines
 from time import time
 from ipdb import set_trace
 
@@ -40,7 +40,7 @@ dt = time() - t
 print('Resampling time {}'.format(dt))
 print('\n')
 
-nb_range = [10**5, 2 * 10**5, 3 * 10**5, 4 * 10**5, 5 * 10**5, 6 * 10**5]
+nb_range = [10**5]#, 2 * 10**5] #, 3 * 10**5, 4 * 10**5, 5 * 10**5, 1 * 10**6, 2 * 10**6]
 
 qb_times = []
 qbx_times = []
@@ -50,32 +50,34 @@ for nb in nb_range:
     print('# Current size is {}'.format(nb))
     print('\n')
 
-    rstreamlines_part = rstreamlines[:nb]
+    len_s = len(streamlines)
+    ordering = np.random.choice(len_s, min(nb, len_s), replace=False)
 
-    thresholds = [35, 30, 25, 20, 15]
+    thresholds = [40, 25, 20, 15]
 
     t = time()
     qbx = QuickBundlesX(thresholds, metric=AveragePointwiseEuclideanMetric())
-    qbx_clusters = qbx.cluster(rstreamlines_part)
+    qbx_clusters = qbx.cluster(rstreamlines, ordering=ordering)
     dt = time() - t
     print(' QBX time {}'.format(dt))
     qbx_times.append(dt)
     qbx_clusters_1 = qbx_clusters.get_clusters(1)
     qbx_clusters_2 = qbx_clusters.get_clusters(2)
     qbx_clusters_3 = qbx_clusters.get_clusters(3)
-    qbx_clusters_4 = qbx_clusters.get_clusters(4)
-    qbx_clusters_5 = qbx_clusters.get_clusters(5)
+#    qbx_clusters_4 = qbx_clusters.get_clusters(4)
+#    qbx_clusters_5 = qbx_clusters.get_clusters(5)
 
     print(' First level clusters {}'.format(len(qbx_clusters_1)))
     print(' Second level clusters {}'.format(len(qbx_clusters_2)))
     print(' Third level clusters {}'.format(len(qbx_clusters_3)))
-    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
-    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
+#    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
+#    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
     print('\n')
 
     t = time()
-    qb = QuickBundles(thresholds[-1], metric=AveragePointwiseEuclideanMetric())
-    qb_clusters = qb.cluster(rstreamlines_part)
+    qb = QuickBundles(thresholds[-1],
+                      metric=AveragePointwiseEuclideanMetric(), bvh=True)
+    qb_clusters = qb.cluster(rstreamlines, ordering=ordering)
     dt2 = time() - t
     print(' QB time {}'.format(dt2))
     qb_times.append(dt2)
