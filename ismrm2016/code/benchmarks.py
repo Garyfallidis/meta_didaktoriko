@@ -52,7 +52,7 @@ for nb in nb_range:
 
     rstreamlines_part = rstreamlines[:nb]
 
-    thresholds = [30, 25, 20, 15]
+    thresholds = [35, 30, 25, 20, 15]
 
     t = time()
     qbx = QuickBundlesX(thresholds, metric=AveragePointwiseEuclideanMetric())
@@ -64,20 +64,25 @@ for nb in nb_range:
     qbx_clusters_2 = qbx_clusters.get_clusters(2)
     qbx_clusters_3 = qbx_clusters.get_clusters(3)
     qbx_clusters_4 = qbx_clusters.get_clusters(4)
+    qbx_clusters_5 = qbx_clusters.get_clusters(5)
 
     print(' First level clusters {}'.format(len(qbx_clusters_1)))
     print(' Second level clusters {}'.format(len(qbx_clusters_2)))
     print(' Third level clusters {}'.format(len(qbx_clusters_3)))
-    print(' Third level clusters {}'.format(len(qbx_clusters_4)))
+    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
+    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
     print('\n')
 
     t = time()
     qb = QuickBundles(thresholds[-1], metric=AveragePointwiseEuclideanMetric())
     qb_clusters = qb.cluster(rstreamlines_part)
-    dt = time() - t
-    print(' QB time {}'.format(dt))
-    qb_times.append(dt)
+    dt2 = time() - t
+    print(' QB time {}'.format(dt2))
+    qb_times.append(dt2)
     print(' Clusters {}'.format(len(qb_clusters)))
+    print('\n')
+
+    print('Speedup {}X'.format(dt2/dt))
     print('\n')
 
 
