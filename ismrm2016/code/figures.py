@@ -36,4 +36,6 @@ ax.set_xticks(nbs)
 ax.set_xticklabels(['1M', '2M', '3M', '4M', '5M'])
 ax.set_xlabel('# streamlines in millions (M)')
 ax.set_ylabel('# seconds')
-set_trace()
+
+plt.savefig('speed.png', dpi=300, bbox_inches='tight')
+#set_trace()
