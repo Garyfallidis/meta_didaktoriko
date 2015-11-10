@@ -3,19 +3,20 @@ import nibabel as nib
 from dipy.viz import actor, window
 from dipy.segment.clustering import QuickBundles, QuickBundlesX
 from dipy.segment.metric import AveragePointwiseEuclideanMetric
-from dipy.tracking.streamline import set_number_of_points, select_random_set_of_streamlines
+from dipy.tracking.streamline import set_number_of_points
 from time import time
 from ipdb import set_trace
-from dipy.segment.clustering import ClusterMapCentroid
+from dipy.segment.clustering import ClusterMapCentroid, ClusterCentroid
 
 
-def quickbundles_with_merging(streamlines, qb, ordering=None):
+def recursive_merging(streamlines, qb, ordering=None):
     cluster_map = qb.cluster(streamlines, ordering=ordering)
     if len(streamlines) == len(cluster_map):
         return cluster_map
 
     qb_for_merging = QuickBundles(metric=qb.metric, threshold=qb.threshold)
-    clusters = quickbundles_with_merging(cluster_map.centroids, qb_for_merging, None)
+    clusters = recursive_merging(cluster_map.centroids,
+                                 qb_for_merging, None)
 
     merged_clusters = ClusterMapCentroid()
     for cluster in clusters:
@@ -30,7 +31,7 @@ def quickbundles_with_merging(streamlines, qb, ordering=None):
     return merged_clusters
 
 
-dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
+dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
 fname = dname + 'tracts.trk'
 fname_npz = dname + 'tracts.npz'
 
@@ -55,6 +56,7 @@ print('Loading time {}'.format(time()-t))
 
 print('Total number of streamlines {}'.format(len(streamlines)))
 
+set_trace()
 
 t = time()
 rstreamlines = set_number_of_points(streamlines, 20)
@@ -62,32 +64,36 @@ dt = time() - t
 print('Resampling time {}'.format(dt))
 print('\n')
 
-nb_range = [10**5]#, 2 * 10**5] #, 3 * 10**5, 4 * 10**5, 5 * 10**5, 1 * 10**6, 2 * 10**6]
+nb_range = [10 ** 5]
+# [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
 
-qb_times = []
-qbx_times = []
+results = {}
 
 for nb in nb_range:
 
     print('# Current size is {}'.format(nb))
     print('\n')
 
+    results[nb] = {}
+
     len_s = len(streamlines)
     ordering = np.random.choice(len_s, min(nb, len_s), replace=False)
 
-    thresholds = [40, 25, 20, 15]
+    thresholds = [30, 25, 20, 15]
 
     t = time()
     qbx = QuickBundlesX(thresholds, metric=AveragePointwiseEuclideanMetric())
     qbx_clusters = qbx.cluster(rstreamlines, ordering=ordering)
     dt = time() - t
     print(' QBX time {}'.format(dt))
-    qbx_times.append(dt)
+
+    results[nb]['QBX time'] = dt
+
     qbx_clusters_1 = qbx_clusters.get_clusters(1)
     qbx_clusters_2 = qbx_clusters.get_clusters(2)
     qbx_clusters_3 = qbx_clusters.get_clusters(3)
-#    qbx_clusters_4 = qbx_clusters.get_clusters(4)
-#    qbx_clusters_5 = qbx_clusters.get_clusters(5)
+    qbx_clusters_4 = qbx_clusters.get_clusters(4)
+    # qbx_clusters_5 = qbx_clusters.get_clusters(5)
 
     qbx_merge = QuickBundlesX([thresholds[-1]],
                               metric=AveragePointwiseEuclideanMetric())
@@ -105,6 +111,7 @@ for nb in nb_range:
     print(' First level clusters {}'.format(len(qbx_clusters_1)))
     print(' Second level clusters {}'.format(len(qbx_clusters_2)))
     print(' Third level clusters {}'.format(len(qbx_clusters_3)))
+    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
     print(' Merged clusters {}'.format(len(qbx_merge_clusters_final)))
 
 #    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
@@ -114,13 +121,14 @@ for nb in nb_range:
 
     t = time()
     qb = QuickBundles(thresholds[-1],
-                      metric=AveragePointwiseEuclideanMetric(), bvh=True)
+                      metric=AveragePointwiseEuclideanMetric(), bvh=False)
     qb_clusters = qb.cluster(rstreamlines, ordering=ordering)
     dt2 = time() - t
     print(' QB time {}'.format(dt2))
-    qb_times.append(dt2)
-    print(' Clusters {}'.format(len(qb_clusters)))
 
+    results[nb]['QB time'] = dt2
+
+    print(' Clusters {}'.format(len(qb_clusters)))
 
     qb_ordering_final = np.random.choice(len(qb_clusters),
                                          len(qb_clusters), replace=False)
