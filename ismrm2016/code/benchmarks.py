@@ -8,6 +8,7 @@ from time import time
 from ipdb import set_trace
 from dipy.segment.clustering import ClusterMapCentroid, ClusterCentroid
 from copy import deepcopy
+from dipy.io.pickles import save_pickle
 
 
 def recursive_merging(streamlines, qb, ordering=None):
@@ -31,9 +32,8 @@ def recursive_merging(streamlines, qb, ordering=None):
     merged_clusters.refdata = cluster_map.refdata
     return merged_clusters
 
-
-# dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
-dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
+dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
+#dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
 fname = dname + 'tracts.trk'
 fname_npz = dname + 'tracts.npz'
 
@@ -64,6 +64,8 @@ dt = time() - t
 print('Resampling time {}'.format(dt))
 print('\n')
 
+del streamlines
+
 nb_range = [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
 
 results = {}
@@ -75,7 +77,7 @@ for nb in nb_range:
 
     results[nb] = {}
 
-    len_s = len(streamlines)
+    len_s = len(rstreamlines)
     ordering = np.random.choice(len_s, min(nb, len_s), replace=False)
 
     thresholds = [30, 25, 20, 15]
@@ -117,8 +119,8 @@ for nb in nb_range:
 
     results[nb]['QBX merge'] = len(qbx_merge_clusters_final)
 
-#    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
-#    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
+    # print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
+    # print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
 
     print('\n')
 
@@ -150,7 +152,5 @@ for nb in nb_range:
     results[nb]['QB merge'] = len(qb_merge_clusters_final)
     results[nb]['Speedup'] = dt2/dt
 
-set_trace()
 
-from dipy.io.pickles import save_pickle
-save_pickle('bench_qbx_vs_qb.pkl', results)
+save_pickle('bench_qbx_vs_qb_new.pkl', results)
