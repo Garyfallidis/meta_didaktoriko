@@ -7,6 +7,7 @@ from dipy.tracking.streamline import set_number_of_points
 from time import time
 from ipdb import set_trace
 from dipy.segment.clustering import ClusterMapCentroid, ClusterCentroid
+from copy import deepcopy
 
 
 def recursive_merging(streamlines, qb, ordering=None):
@@ -31,7 +32,8 @@ def recursive_merging(streamlines, qb, ordering=None):
     return merged_clusters
 
 
-dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
+# dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
+dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
 fname = dname + 'tracts.trk'
 fname_npz = dname + 'tracts.npz'
 
@@ -56,16 +58,13 @@ print('Loading time {}'.format(time()-t))
 
 print('Total number of streamlines {}'.format(len(streamlines)))
 
-set_trace()
-
 t = time()
 rstreamlines = set_number_of_points(streamlines, 20)
 dt = time() - t
 print('Resampling time {}'.format(dt))
 print('\n')
 
-nb_range = [10 ** 5]
-# [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
+nb_range = [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
 
 results = {}
 
@@ -106,6 +105,8 @@ for nb in nb_range:
         qbx_clusters.get_clusters(len(thresholds)).centroids,
         ordering=qbx_ordering_final)
 
+    results[nb]['QBX stats'] = deepcopy(qbx_clusters.get_stats())
+
     qbx_merge_clusters_final = qbx_merge_clusters.get_clusters(1)
 
     print(' First level clusters {}'.format(len(qbx_clusters_1)))
@@ -113,6 +114,8 @@ for nb in nb_range:
     print(' Third level clusters {}'.format(len(qbx_clusters_3)))
     print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
     print(' Merged clusters {}'.format(len(qbx_merge_clusters_final)))
+
+    results[nb]['QBX merge'] = len(qbx_merge_clusters_final)
 
 #    print(' Fourth level clusters {}'.format(len(qbx_clusters_4)))
 #    print(' Fifth level clusters {}'.format(len(qbx_clusters_5)))
@@ -127,6 +130,7 @@ for nb in nb_range:
     print(' QB time {}'.format(dt2))
 
     results[nb]['QB time'] = dt2
+    results[nb]['QB stats'] = deepcopy(qb_clusters.stats)
 
     print(' Clusters {}'.format(len(qb_clusters)))
 
@@ -143,5 +147,10 @@ for nb in nb_range:
     print('Speedup {}X'.format(dt2/dt))
     print('\n')
 
+    results[nb]['QB merge'] = len(qb_merge_clusters_final)
+    results[nb]['Speedup'] = dt2/dt
 
 set_trace()
+
+from dipy.io.pickles import save_pickle
+save_pickle('bench_qbx_vs_qb.pkl', results)
