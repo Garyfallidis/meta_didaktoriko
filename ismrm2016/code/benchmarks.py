@@ -48,12 +48,12 @@ def show_streamlines(streamlines):
 # trkfile = nib.streamlines.load(fname)
 # print('Loading time {}'.format(time()-t))
 # streamlines = trkfile.streamlines
-# nib.streamlines.utils.save_compact_list(fname_npz, trkfile.streamlines)
+# nib.streamlines.compact_list.save_compact_list(fname_npz, trkfile.streamlines)
 
 # loading time improved from 85.11sec  to 13.29 usin npz and then 4.5 seconds!!
 
 t = time()
-streamlines = nib.streamlines.utils.load_compact_list(fname_npz)
+streamlines = nib.streamlines.compact_list.load_compact_list(fname_npz)
 print('Loading time {}'.format(time()-t))
 
 print('Total number of streamlines {}'.format(len(streamlines)))
