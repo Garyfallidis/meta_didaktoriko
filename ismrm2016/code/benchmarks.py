@@ -32,8 +32,8 @@ def recursive_merging(streamlines, qb, ordering=None):
     merged_clusters.refdata = cluster_map.refdata
     return merged_clusters
 
-dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
-#dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
+#dname = '/home/eleftherios/Data/Test_data_Jasmeen/Elef_Test_RecoBundles/'
+dname = '/home/eleftherios/Data/Elef_Test_RecoBundles/'
 fname = dname + 'tracts.trk'
 fname_npz = dname + 'tracts.npz'
 
@@ -48,12 +48,12 @@ def show_streamlines(streamlines):
 # trkfile = nib.streamlines.load(fname)
 # print('Loading time {}'.format(time()-t))
 # streamlines = trkfile.streamlines
-# nib.streamlines.utils.save_compact_list(fname_npz, trkfile.streamlines)
+# nib.streamlines.compact_list.save_compact_list(fname_npz, trkfile.streamlines)
 
 # loading time improved from 85.11sec  to 13.29 usin npz and then 4.5 seconds!!
 
 t = time()
-streamlines = nib.streamlines.utils.load_compact_list(fname_npz)
+streamlines = nib.streamlines.compact_list.load_compact_list(fname_npz)
 print('Loading time {}'.format(time()-t))
 
 print('Total number of streamlines {}'.format(len(streamlines)))
@@ -66,7 +66,8 @@ print('\n')
 
 del streamlines
 
-nb_range = [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
+# nb_range = [10**6, 2 * 10**6, 3 * 10**6, 4 * 10**6, len(rstreamlines)]
+nb_range = [10**5, 2 * 10**5, 3 * 10**5, 4 * 10**5, 5 * 10**5]
 
 results = {}
 
@@ -152,5 +153,5 @@ for nb in nb_range:
     results[nb]['QB merge'] = len(qb_merge_clusters_final)
     results[nb]['Speedup'] = dt2/dt
 
-
-save_pickle('bench_qbx_vs_qb_new.pkl', results)
+#set_trace()
+#save_pickle('bench_qbx_vs_qb_complexity.pkl', results)
